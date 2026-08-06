@@ -12,9 +12,14 @@ import os
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOMAIN = 'https://cncventure.com'
+DOMAIN = 'https://cncventure.org'
 
 BODY = open(os.path.join(ROOT, 'src', '_body.html')).read()
+
+import sys
+sys.path.insert(0, os.path.join(ROOT, 'src'))
+import assets  # noqa: E402
+VMAP = assets.build_map(os.path.join(ROOT, 'img'))
 
 # ── shared <head> ────────────────────────────────────────────────────────────
 HEAD = '''<!DOCTYPE html>
@@ -68,7 +73,7 @@ FONTS_EN = ('https://fonts.googleapis.com/css2?'
 # and buttons, 700/800 for headings. CJK webfonts are large and are deliberately
 # NOT requested on the English pages.
 FONTS_ZH = (FONTS_EN.replace('&display=swap', '')
-            + '&family=Noto+Sans+TC:wght@400;500;700;800&display=swap')
+            + '&family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap')
 
 META = {
     'en': dict(
@@ -132,6 +137,7 @@ def build(slug):
     doc = set_language_switch(doc, slug)
     page = HEAD.format(domain=DOMAIN, **meta) + doc.rstrip() + \
         '\n<script src="/js/main.js" defer></script>\n</body>\n</html>\n'
+    page = assets.version(page, VMAP)
     out = os.path.join(ROOT, slug, 'index.html')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w').write(page)

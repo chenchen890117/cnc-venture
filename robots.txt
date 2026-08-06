@@ -3,4 +3,4 @@ Allow: /
 Disallow: /src/
 Disallow: /tools/
 
-Sitemap: https://cncventure.com/sitemap.xml
+Sitemap: https://cncventure.org/sitemap.xml

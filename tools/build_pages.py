@@ -11,16 +11,19 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'src'))
-DOMAIN = 'https://cncventure.com'
+DOMAIN = 'https://cncventure.org'
 CTA = 'https://www.surveycake.com/s/3qKZN'
 
+import assets  # noqa: E402
 from content_pages import PAGES, UI  # noqa: E402
+
+VMAP = assets.build_map(os.path.join(ROOT, 'img'))
 
 FONTS_EN = ('https://fonts.googleapis.com/css2?'
             'family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600'
             '&family=Inter:wght@300;400;500;600&display=swap')
 FONTS_ZH = (FONTS_EN.replace('&display=swap', '')
-            + '&family=Noto+Sans+TC:wght@400;500;700;800&display=swap')
+            + '&family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap')
 
 LANGS = {
     'en':    dict(code='en',          slug='en',    oglocale='en_US', ogalt='zh_TW', fonts=FONTS_EN),
@@ -334,6 +337,7 @@ def build_page(slug, lang):
 
     out_dir = os.path.join(ROOT, s, folder, slug)
     os.makedirs(out_dir, exist_ok=True)
+    doc = assets.version(doc, VMAP)
     open(os.path.join(out_dir, 'index.html'), 'w').write(doc)
     return len(doc)
 
@@ -423,6 +427,7 @@ def build_index(folder, lang):
 {footer(lang)}'''
     out = os.path.join(ROOT, s, folder)
     os.makedirs(out, exist_ok=True)
+    doc = assets.version(doc, VMAP)
     open(os.path.join(out, 'index.html'), 'w').write(doc)
     print(f'  /{s}/{folder}/  {len(doc)/1024:5.1f} KB')
 

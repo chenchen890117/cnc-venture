@@ -778,7 +778,7 @@ html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
 html[lang^="zh"]{--read:min(680px,100%)}          /* ~34 Chinese characters */
 html[lang^="zh"] .doc h1{
   font-family:"Fraunces",var(--cjk-sans),sans-serif;
-  font-weight:900;letter-spacing:-.045em;line-height:1.1;
+  font-weight:900;letter-spacing:-.038em;line-height:1.1;
   font-size:clamp(31px,4.3vw,60px);
 }
 html[lang^="zh"] .prose > h2,
