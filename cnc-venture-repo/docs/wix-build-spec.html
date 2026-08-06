@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CnC Venture — Wix Build Spec V1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#02383D; --ink-deep:#012225; --ink-soft:#0C4F50;
+  --warm-white:#FBF8F3; --beige:#F2EAE0; --sand:#E8DCC8;
+  --stone:#C9C2B6; --stone-deep:#8A8578;
+  --sunset:#D9773F; --sunset-deep:#B8683A; --dusk:#E9A47C;
+  --on-light:#12312F; --mute:#5D6B66;
+  --rule:rgba(18,49,47,.13);
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--warm-white);color:var(--on-light);
+  font-family:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:15.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+.serif{font-family:"Fraunces","Iowan Old Style",Georgia,serif;font-variation-settings:"SOFT" 0,"WONK" 0}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.86em;letter-spacing:-.01em}
+h1,h2,h3,h4{margin:0;font-weight:400}
+p{margin:0}
+a{color:var(--sunset-deep)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--pad)}
+
+/* Cover */
+.cover{background:var(--ink);color:#F5F1E8;padding-block:clamp(72px,10vw,140px) clamp(56px,7vw,96px)}
+.cover .label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,241,232,.5)}
+.cover h1{margin-top:26px;font-size:clamp(38px,6.4vw,86px);line-height:1;letter-spacing:-.032em}
+.cover h1 em{font-style:italic;color:var(--sand);display:block}
+.cover p{margin-top:28px;max-width:56ch;color:rgba(245,241,232,.78);font-weight:300;font-size:17px}
+.cover .meta{display:flex;flex-wrap:wrap;gap:10px 40px;margin-top:44px;padding-top:22px;
+  border-top:1px solid rgba(245,241,232,.18);font-size:12.5px;color:rgba(245,241,232,.6)}
+
+/* Sections */
+section{padding-block:clamp(52px,6vw,84px);border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--stone-deep);
+  display:flex;align-items:center;gap:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2.sec{margin-top:20px;font-size:clamp(27px,3.4vw,42px);line-height:1.08;letter-spacing:-.026em}
+.intro{margin-top:18px;max-width:66ch;color:var(--mute);font-weight:300;font-size:17px}
+
+/* Token swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px;margin-top:32px}
+.sw{border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:#fff}
+.sw .chip{height:72px}
+.sw .n{padding:11px 13px 13px;font-size:12px;line-height:1.45}
+.sw .n b{display:block;font-weight:500;font-size:12.5px}
+.sw .n code{color:var(--mute)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin-top:26px;font-size:13.5px}
+th{text-align:left;font-weight:500;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--stone-deep);padding:0 16px 11px 0;border-bottom:1px solid var(--rule);vertical-align:bottom}
+td{padding:13px 16px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.55}
+tr:hover td{background:rgba(232,220,200,.28)}
+td:last-child,th:last-child{padding-right:0}
+td code{color:var(--ink);background:rgba(2,56,61,.055);padding:1.5px 6px;border-radius:3px;white-space:nowrap}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Section blocks */
+.block{margin-top:38px;padding-top:30px;border-top:2px solid var(--ink)}
+.block:first-of-type{margin-top:34px}
+.block-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px}
+.block-head .idx{font-size:11.5px;letter-spacing:.2em;color:var(--sunset-deep);font-variant-numeric:tabular-nums}
+.block-head h3{font-size:clamp(21px,2.3vw,28px);letter-spacing:-.022em}
+.block-head .bg{margin-left:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--stone-deep);display:flex;align-items:center;gap:8px}
+.block-head .bg i{width:13px;height:13px;border-radius:3px;border:1px solid var(--rule);display:inline-block}
+.copy{margin-top:22px;background:var(--beige);border-radius:3px;padding:20px 22px}
+.copy .ck{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stone-deep);margin-bottom:12px}
+.copy dl{margin:0;display:grid;gap:9px 20px;grid-template-columns:minmax(88px,auto) 1fr;font-size:13.5px}
+.copy dt{color:var(--mute)}
+.copy dd{margin:0}
+.copy dd.hl{font-family:"Fraunces",Georgia,serif;font-size:17px;line-height:1.3;letter-spacing:-.015em}
+.note{margin-top:18px;font-size:13px;color:var(--mute);padding-left:15px;border-left:2px solid var(--sunset);line-height:1.62}
+.note b{color:var(--on-light);font-weight:500}
+
+ul.tight{margin:16px 0 0;padding-left:19px;font-size:13.5px;line-height:1.7;color:var(--mute)}
+ul.tight li::marker{color:var(--sunset)}
+ul.tight b{color:var(--on-light);font-weight:500}
+
+.warn{margin-top:28px;background:rgba(217,119,63,.09);border:1px solid rgba(217,119,63,.28);
+  border-radius:3px;padding:18px 20px;font-size:13.5px;line-height:1.65}
+.warn b{font-weight:500}
+footer{padding-block:56px 80px;font-size:12.5px;color:var(--stone-deep)}
+@media(max-width:640px){
+  .copy dl{grid-template-columns:1fr;gap:3px}
+  .copy dt{margin-top:9px}
+  table,thead,tbody,th,td,tr{display:block}
+  thead{display:none}
+  td{padding:6px 0;border:0}
+  tr{display:block;padding:14px 0;border-bottom:1px solid var(--rule)}
+  td:first-child{font-weight:500}
+}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="label">CnC Venture · Homepage V1</div>
+    <h1 class="serif">Wix Build Spec<em>Section by section.</em></h1>
+    <p>Everything needed to rebuild the approved homepage inside the Wix editor: tokens, type scale, grid, spacing, image ratios, motion, and the CMS bindings that are already live on the site.</p>
+    <div class="meta">
+      <span>Reference width 1440 px</span>
+      <span>Site: Cnc Venture</span>
+      <span>Version 1.0 · August 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ TOKENS ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">A — Colour</div>
+    <h2 class="sec serif">Twelve colours. No cold grey, no corporate blue.</h2>
+    <p class="intro">Set these as Wix site colours before touching any section, so every element inherits them. Wix's palette has five main slots plus tints — map the first five below into the main slots in this order.</p>
+
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#02383D"></div><div class="n"><b>Primary / Ink</b><code>#02383D</code></div></div>
+      <div class="sw"><div class="chip" style="background:#FBF8F3"></div><div class="n"><b>Warm White</b><code>#FBF8F3</code></div></div>
+      <div class="sw"><div class="chip" style="background:#E8DCC8"></div><div class="n"><b>Sand</b><code>#E8DCC8</code></div></div>
+      <div class="sw"><div class="chip" style="background:#D9773F"></div><div class="n"><b>Arizona Sunset</b><code>#D9773F</code></div></div>
+      <div class="sw"><div class="chip" style="background:#12312F"></div><div class="n"><b>Text on light</b><code>#12312F</code></div></div>
+      <div class="sw"><div class="chip" style="background:#012225"></div><div class="n"><b>Ink Deep</b><code>#012225</code></div></div>
+      <div class="sw"><div class="chip" style="background:#0C4F50"></div><div class="n"><b>Ink Soft</b><code>#0C4F50</code></div></div>
+      <div class="sw"><div class="chip" style="background:#F2EAE0"></div><div class="n"><b>Soft Beige</b><code>#F2EAE0</code></div></div>
+      <div class="sw"><div class="chip" style="background:#C9C2B6"></div><div class="n"><b>Stone</b><code>#C9C2B6</code></div></div>
+      <div class="sw"><div class="chip" style="background:#8A8578"></div><div class="n"><b>Stone Deep</b><code>#8A8578</code></div></div>
+      <div class="sw"><div class="chip" style="background:#B8683A"></div><div class="n"><b>Sunset Deep</b><code>#B8683A</code></div></div>
+      <div class="sw"><div class="chip" style="background:#E9A47C"></div><div class="n"><b>Dusk</b><code>#E9A47C</code></div></div>
+    </div>
+
+    <table>
+      <thead><tr><th style="width:26%">Role</th><th style="width:26%">Value</th><th>Where it is used</th></tr></thead>
+      <tbody>
+        <tr><td>Muted text on light</td><td><code>#5D6B66</code></td><td>All secondary paragraphs and card descriptions</td></tr>
+        <tr><td>Text on dark</td><td><code>#F5F1E8</code></td><td>Headlines and body on ink backgrounds</td></tr>
+        <tr><td>Muted text on dark</td><td><code>rgba(245,241,232,.62)</code></td><td>Journey step copy, city guide intro</td></tr>
+        <tr><td>Hairline on light</td><td><code>rgba(18,49,47,.13)</code></td><td>Every 1px divider on warm white</td></tr>
+        <tr><td>Hairline on dark</td><td><code>rgba(245,241,232,.16)</code></td><td>Every 1px divider on ink</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn"><b>Never used anywhere:</b> pure black, pure white, cold grey, corporate blue, gradients other than the photographic overlays, drop shadows except the one on story-card hover.</div>
+  </div>
+</section>
+
+<!-- ═══ TYPE ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">B — Typography</div>
+    <h2 class="sec serif">Two families. Eight roles. One of them is enormous.</h2>
+    <p class="intro">Upload <b>Fraunces</b> (variable, with SOFT 0 / WONK 0) and <b>Inter</b> as custom fonts in Wix. If a variable font cannot be uploaded, use Fraunces 400 and 500 static cuts. Fallbacks: Iowan Old Style → Georgia for display, system sans for body.</p>
+
+    <table>
+      <thead><tr><th style="width:20%">Role</th><th style="width:14%">Family</th><th class="num" style="width:13%">@1440px</th><th class="num" style="width:11%">Line-height</th><th class="num" style="width:13%">Tracking</th><th>Applied to</th></tr></thead>
+      <tbody>
+        <tr><td>Display XL</td><td>Fraunces 400</td><td class="num">190 px</td><td class="num">0.86</td><td class="num">−0.035em</td><td>“EXPAND” only</td></tr>
+        <tr><td>Display Hero italic</td><td>Fraunces 400 <i>italic</i></td><td class="num">106 px</td><td class="num">0.98</td><td class="num">−0.03em</td><td>“Beyond Borders.”</td></tr>
+        <tr><td>Display L</td><td>Fraunces 400</td><td class="num">78 px</td><td class="num">1.02</td><td class="num">−0.028em</td><td>All section headlines</td></tr>
+        <tr><td>Display M</td><td>Fraunces 400</td><td class="num">46 px</td><td class="num">1.10</td><td class="num">−0.024em</td><td>Featured article headline</td></tr>
+        <tr><td>Display S</td><td>Fraunces 400</td><td class="num">30 px</td><td class="num">1.18</td><td class="num">−0.020em</td><td>Card and city titles</td></tr>
+        <tr><td>Stat number</td><td>Fraunces 400</td><td class="num">63 px</td><td class="num">1.00</td><td class="num">−0.035em</td><td>$314B · 5M+ · 4.9% · 70+</td></tr>
+        <tr><td>Lede</td><td>Inter 300</td><td class="num">21 px</td><td class="num">1.62</td><td class="num">−0.011em</td><td>Section intros, hero sub</td></tr>
+        <tr><td>Body</td><td>Inter 400</td><td class="num">17 px</td><td class="num">1.66</td><td class="num">−0.005em</td><td>Main paragraphs</td></tr>
+        <tr><td>Body S</td><td>Inter 400</td><td class="num">14.5 px</td><td class="num">1.62</td><td class="num">0</td><td>Card copy, step copy</td></tr>
+        <tr><td>Label</td><td>Inter 500 caps</td><td class="num">11.5 px</td><td class="num">1.20</td><td class="num">+0.20em</td><td>“01 — WHY ARIZONA”, kickers</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>The one rule that carries the whole design:</b> nothing sits between 21 px and 46 px. The jump from body to headline is the hierarchy. Adding a 28 px subheading anywhere will flatten it.</div>
+  </div>
+</section>
+
+<!-- ═══ GRID ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">C — Grid, spacing and components</div>
+    <h2 class="sec serif">Whitespace is the product.</h2>
+
+    <table>
+      <thead><tr><th style="width:30%">Property</th><th style="width:24%">@1440px</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Content max width</td><td class="num">1560 px</td><td>Centred; sections themselves are full-bleed</td></tr>
+        <tr><td>Page side padding</td><td class="num">86 px</td><td><code>clamp(24px, 6vw, 104px)</code> — 24 px on mobile</td></tr>
+        <tr><td>Section padding top/bottom</td><td class="num">173 px</td><td><code>clamp(88px, 12vw, 196px)</code> — this is the single biggest premium signal; do not reduce it</td></tr>
+        <tr><td>Section masthead</td><td class="num">22% / rest</td><td>Left label column, right headline. Gap 72 px</td></tr>
+        <tr><td>Industries grid</td><td class="num">3 × col</td><td>Column gap 40 px, row gap 52 px. 2 columns under 1120 px, 1 under 700 px</td></tr>
+        <tr><td>Stories grid</td><td class="num">3 × col</td><td>Gap 44 px. 1 column under 840 px</td></tr>
+        <tr><td>Cities grid</td><td class="num">5 × col</td><td>Gap 22 px. Horizontal scroll under 1100 px</td></tr>
+        <tr><td>Stats / Journey</td><td class="num">4 / 5 × col</td><td>Separated by 1 px vertical hairlines, not gaps</td></tr>
+        <tr><td>Corner radius</td><td class="num">2 px</td><td>Images and cards only. Buttons are full pills</td></tr>
+        <tr><td>Button</td><td class="num">17 / 30 px</td><td>Pill. Label Inter 500 at 14.5 px. Arrow “→” shifts +5 px on hover</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="serif" style="margin-top:44px;font-size:21px;letter-spacing:-.02em">Image ratios</h3>
+    <table>
+      <thead><tr><th style="width:34%">Slot</th><th style="width:22%">Ratio</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td class="num">Full bleed</td><td>Min height <code>min(104vh, 1040px)</code>, <code>object-fit: cover</code></td></tr>
+        <tr><td>Why Arizona portrait</td><td class="num">11 : 14</td><td>Offset down ~72 px from the copy column</td></tr>
+        <tr><td>Industry card</td><td class="num">4 : 3</td><td>Hover: scale 1.045 over 1.5 s</td></tr>
+        <tr><td>Story card</td><td class="num">10 : 7</td><td>Hover: card lifts 6 px, image scales 1.05</td></tr>
+        <tr><td>Featured article</td><td class="num">14 : 9</td><td>Left of the text, 1.08 : 0.92 split</td></tr>
+        <tr><td>Insight card</td><td class="num">fixed 236 px</td><td>Fixed height, not a ratio — this is what keeps the three cards aligned</td></tr>
+        <tr><td>City card</td><td class="num">18 : 24</td><td>Bottom scrim <code>rgba(1,28,31,.94) → transparent at 80%</code></td></tr>
+        <tr><td>Closing CTA</td><td class="num">Full bleed</td><td>Min height <code>min(88vh, 860px)</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="serif" style="margin-top:44px;font-size:21px;letter-spacing:-.02em">Motion</h3>
+    <ul class="tight">
+      <li><b>Reveal on scroll</b> — fade 0→1 and rise 26 px → 0, over 1.05 s, easing <code>cubic-bezier(.22,.61,.36,1)</code>. Triggers when the element is 12% into the viewport.</li>
+      <li><b>Stagger</b> — 70–100 ms between siblings in a grid. Never more than five steps.</li>
+      <li><b>Hero parallax</b> — background moves at 0.16× scroll speed, image pre-scaled 1.02 so no edge shows.</li>
+      <li><b>Image hover</b> — scale 1.045–1.06 over 1.5 s. Slow is the point.</li>
+      <li><b>Nav</b> — transparent over the hero; after 60 px of scroll it fades to <code>rgba(2,56,61,.94)</code> with an 18 px backdrop blur.</li>
+      <li><b>Banned</b> — slide-ins from the side, bounce, spin, zoom-on-load, typewriter, counters that tick up.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ SECTIONS ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">D — Section by section</div>
+    <h2 class="sec serif">Nine sections, in order.</h2>
+    <p class="intro">Each block below gives the background, structure, exact copy, and the anything-specific worth knowing. Backgrounds alternate deliberately: light, dark, light, light, beige, light, dark, light, image.</p>
+
+    <!-- 1 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">01</span><h3 class="serif">Hero</h3>
+        <span class="bg"><i style="background:#012225"></i> Ink Deep + photo</span></div>
+      <ul class="tight">
+        <li>Full-bleed image, three stacked overlay gradients: dark from the top (68%→0 by 52%), dark from the left (62%→0 by 74%), dark from the bottom (60%→0 by 40%). The left gradient is what makes the headline readable without dimming the sunset.</li>
+        <li>Content is bottom-left anchored, not centred. Padding top ~190 px (clears the nav), bottom ~84 px.</li>
+        <li>Below the buttons: a 1 px hairline, then city list on the left and an animated scroll cue on the right.</li>
+        <li>“Beyond Borders.” must stay on one line — set it <code>white-space: nowrap</code> and let the font size shrink instead of wrapping.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Eyebrow</dt><dd>Business Expansion Platform · Taiwan → United States</dd>
+          <dt>Headline</dt><dd class="hl">EXPAND<br><i>Beyond Borders.</i></dd>
+          <dt>Sub</dt><dd>Helping ambitious companies launch, build, and grow in the United States.</dd>
+          <dt>Primary</dt><dd>Start Your U.S. Expansion →</dd>
+          <dt>Secondary</dt><dd>Explore Arizona</dd>
+          <dt>Footer row</dt><dd>Phoenix · Scottsdale · Tempe · Mesa · Gilbert &nbsp;|&nbsp; Scroll</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">02</span><h3 class="serif">Why Arizona</h3>
+        <span class="bg"><i style="background:#FBF8F3"></i> Warm White</span></div>
+      <ul class="tight">
+        <li>Masthead: label <code>01 — WHY ARIZONA</code> left, headline right.</li>
+        <li>Body row: 1.15 fr copy / 0.85 fr portrait, gap 84 px. The portrait sits 72 px lower than the copy — the offset is deliberate and is most of the editorial feel.</li>
+        <li>First paragraph is Lede (21 px / 300). The following two drop to muted body. <code>$314 billion</code> is weight 500, no colour change.</li>
+        <li>Stats row: four columns, 1 px hairlines between and above, ~110 px above it. Source line 26 px under, 11.5 px, Stone Deep.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">The desert is where<br>America is building next.</dd>
+          <dt>Stat 1</dt><dd><b>$314B</b> — Semiconductor capital committed to Arizona since 2020</dd>
+          <dt>Stat 2</dt><dd><b>5M+</b> — People in Greater Phoenix, the 5th largest U.S. city at its centre</dd>
+          <dt>Stat 3</dt><dd><b>4.9%</b> — Flat state corporate income tax, among the lowest in the country</dd>
+          <dt>Stat 4</dt><dd><b>70+</b> — Semiconductor expansions won by the state since 2020</dd>
+          <dt>Sources</dt><dd>Arizona Commerce Authority (2026) · U.S. Census Bureau · Tax Foundation, 2026 State Tax Competitiveness Index</dd>
+          <dt>Caption</dt><dd>Late light over the Salt River Valley, looking toward the Estrella range.</dd>
+        </dl>
+      </div>
+      <div class="note"><b>Keep the source line.</b> It is the single cheapest credibility signal on the page, and it is what separates this section from a consulting brochure. Update it whenever a figure changes.</div>
+    </div>
+
+    <!-- 3 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">03</span><h3 class="serif">Your Expansion Journey</h3>
+        <span class="bg"><i style="background:#02383D"></i> Ink</span></div>
+      <ul class="tight">
+        <li>Five equal columns divided by 1 px vertical hairlines, with a single horizontal hairline running across the top of all five.</li>
+        <li>An 8 px Arizona Sunset dot sits on that top line at the start of each column, half above the line. This is the entire timeline device — no icons, no arrows, no connecting graphics.</li>
+        <li>Column order per step: number (11.5 px label) → 34 px gap → title (26 px Fraunces) → 12 px → copy (14.5 px, max 30ch).</li>
+        <li>Stacks to a single column under 1000 px, hairlines becoming horizontal dividers; the dots disappear.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">Expansion is not an event.<br>It is a sequence.</dd>
+          <dt>Intro</dt><dd>Each step earns the next. We work through all five with you — and we are still there for the fifth.</dd>
+          <dt>01</dt><dd><b>Market Discovery</b> — Before anything is signed. We test whether the American market actually wants what you have built — and where it wants it.</dd>
+          <dt>02</dt><dd><b>Business Setup</b> — Entity, banking, tax, insurance, payroll. The unglamorous foundation that decides how fast everything after it moves.</dd>
+          <dt>03</dt><dd><b>Site Selection</b> — The right city, the right corridor, the right building — negotiated by people who know what the lease should cost.</dd>
+          <dt>04</dt><dd><b>Market Entry</b> — Brand, hiring, permits, first customers. The ninety days that set the ceiling for the next ten years.</dd>
+          <dt>05</dt><dd><b>Growth</b> — Second location, second product, second round. We stay long after the ribbon is cut.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">04</span><h3 class="serif">Industries</h3>
+        <span class="bg"><i style="background:#FBF8F3"></i> Warm White</span></div>
+      <ul class="tight">
+        <li>Three columns. Card = image (4:3) → 20 px → title row → 16 px → 1 px hairline → 14 px → description.</li>
+        <li>The title row is a baseline-aligned pair: industry name left, index number (<code>01</code>–<code>06</code>) right in 11.5 px Stone Deep.</li>
+        <li>On hover the hairline under the title goes from <code>rgba(18,49,47,.13)</code> to solid <code>#02383D</code> over 0.6 s, and the image scales 1.045. Nothing else moves.</li>
+        <li>Bind to the <code>Industries</code> collection — six items are already in it, sorted by <code>sortOrder</code>.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">Six ways into<br>the American market.</dd>
+          <dt>01</dt><dd><b>Restaurant</b> — From a single kitchen in Taipei to a full dining room in Scottsdale — licensing, build-out, and staff.</dd>
+          <dt>02</dt><dd><b>Consumer Brand</b> — Shelf space, distribution, compliance, and a brand story that survives translation.</dd>
+          <dt>03</dt><dd><b>Startup</b> — Capital, first customers, and a soft landing inside a real ecosystem rather than a co-working desk.</dd>
+          <dt>04</dt><dd><b>Technology</b> — Plugging into the fastest-growing semiconductor corridor in America, alongside your customers.</dd>
+          <dt>05</dt><dd><b>Manufacturing</b> — Land, labour, power, permits — and the supply chain that has to come with you.</dd>
+          <dt>06</dt><dd><b>Retail</b> — Locations chosen with traffic data and demographics, not intuition and a good feeling.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">05</span><h3 class="serif">Expansion Stories</h3>
+        <span class="bg"><i style="background:#F2EAE0"></i> Soft Beige</span></div>
+      <ul class="tight">
+        <li>The only section on Soft Beige. Cards are Warm White, so they lift off the background without needing a shadow at rest.</li>
+        <li>Card body order: route → 18 px → headline → 14 px → summary → auto space → tags at the bottom, so all three card footers align regardless of headline length.</li>
+        <li>Route line is 12 px caps, tracking 0.14em, in Sunset Deep, with a low-opacity arrow between origin and destination.</li>
+        <li>Hover: card lifts 6 px with <code>0 26px 60px -30px rgba(2,56,61,.34)</code>. This is the only shadow in the design.</li>
+        <li>Bind to <code>ExpansionStories</code>, filtered on <code>featured = true</code>, sorted by <code>sortOrder</code>.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">Every company that lands<br>here arrived from somewhere.</dd>
+          <dt>Story 1</dt><dd><b>Taipei → Scottsdale</b> · A twelve-seat noodle bar becomes a ninety-seat dining room. <span style="color:var(--mute)">Food &amp; Beverage · Site selection, licensing, hiring</span></dd>
+          <dt>Story 2</dt><dd><b>Hsinchu → Chandler</b> · A component supplier follows its customer into the desert. <span style="color:var(--mute)">Advanced Manufacturing · Entity, real estate, permitting</span></dd>
+          <dt>Story 3</dt><dd><b>Taichung → Phoenix</b> · A consumer brand finds its first five hundred American shelves. <span style="color:var(--mute)">Consumer Brand · Distribution, compliance, brand</span></dd>
+          <dt>Button</dt><dd>Read all expansion stories →</dd>
+        </dl>
+      </div>
+      <div class="warn"><b>These three stories are structural placeholders.</b> They describe plausible journeys but no real client. Replace each with a genuine engagement — with the client's permission — before the site goes public. The card shape works with any real story: origin city, destination city, one sentence of outcome, scope of work.</div>
+    </div>
+
+    <!-- 6 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">06</span><h3 class="serif">Insights — The Expansion Journal</h3>
+        <span class="bg"><i style="background:#FBF8F3"></i> Warm White</span></div>
+      <ul class="tight">
+        <li>Magazine masthead: title left, a one-sentence description of the publication right, aligned to the baseline, then a full-width hairline.</li>
+        <li>Featured article: image 1.08 fr / text 0.92 fr, gap 60 px, with a hairline below it. Kicker is <code>CATEGORY — READ TIME</code>, category in Sunset Deep and time in Stone Deep, separated by a 14 px rule.</li>
+        <li>Three cards below, split by vertical hairlines. Card images use a <b>fixed 236 px height</b>, not a ratio — otherwise the first column, which has no left padding, renders taller than the other two.</li>
+        <li>Blog categories are already created on the site: Market Insights, City Guides, Field Reports, Playbooks. Four launch articles are sitting as drafts.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Title</dt><dd class="hl">The Expansion Journal</dd>
+          <dt>Standfirst</dt><dd>A business magazine on building in America — market reports, city guides, and the numbers behind the decisions.</dd>
+          <dt>Featured</dt><dd><b>Field Report · 12 min</b> — Why Taiwanese manufacturers are quietly moving to Chandler.</dd>
+          <dt>Card 1</dt><dd><b>Market Insight · 6 min</b> — What a Scottsdale lease really costs in 2026.</dd>
+          <dt>Card 2</dt><dd><b>Playbook · 9 min</b> — The first ninety days on American soil.</dd>
+          <dt>Card 3</dt><dd><b>City Guide · 7 min</b> — Phoenix, Tempe, Mesa: choosing your first address.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">07</span><h3 class="serif">Arizona City Guide</h3>
+        <span class="bg"><i style="background:#02383D"></i> Ink</span></div>
+      <ul class="tight">
+        <li>Five equal columns above 1100 px; below that it becomes a horizontal snap-scroll strip with cards at 62vw.</li>
+        <li>Caption block sits on the image bottom, over a scrim that reaches 94% opacity at the base. The scrim has to be this heavy — three of the five images are pale, and the text has to hold on all of them.</li>
+        <li>Caption order: city (29 px Fraunces) → 8 px → role (13 px Fraunces italic) → 14 px → 1 px rule → 12 px → fact.</li>
+        <li>Bind to <code>ArizonaCities</code> — five items already in place, sorted by <code>sortOrder</code>.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">One valley.<br>Five very different answers.</dd>
+          <dt>Intro</dt><dd>Greater Phoenix is not one market. Choosing the wrong city inside it is the most expensive mistake a new arrival makes.</dd>
+          <dt>Phoenix</dt><dd><i>The centre of gravity</i> — Capital, government, and the fifth-largest city in the United States.</dd>
+          <dt>Scottsdale</dt><dd><i>Where the market pays a premium</i> — Hospitality, retail, and a customer who is willing to spend.</dd>
+          <dt>Tempe</dt><dd><i>The talent</i> — Arizona State University, startups, and the youngest workforce in the valley.</dd>
+          <dt>Mesa</dt><dd><i>Room to build</i> — Land, logistics, and an aerospace cluster at Falcon Field.</dd>
+          <dt>Gilbert</dt><dd><i>The family market</i> — One of the fastest-growing suburbs in the country, and it shops locally.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">08</span><h3 class="serif">Partners</h3>
+        <span class="bg"><i style="background:#FBF8F3"></i> Warm White</span></div>
+      <ul class="tight">
+        <li>A list, not a grid, and definitely not a logo wall. Eight rows, each divided by a 1 px hairline, three columns: number (34 px) / category (26%) / description.</li>
+        <li>Row hover: background fades to <code>rgba(232,220,200,.4)</code> and the row's inline padding grows by 20 px over 0.6 s. The row appears to breathe outward. This is the whole interaction.</li>
+        <li>The <code>PartnerEcosystem</code> collection has a <code>Named Partners</code> field ready for when you want to add actual firm names under each category.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Headline</dt><dd class="hl">An ecosystem,<br>not a logo wall.</dd>
+          <dt>Intro</dt><dd>Expansion is decided by who picks up the phone. These are the eight relationships that carry a company through its first American year.</dd>
+          <dt>01–08</dt><dd>Government · CPA · Attorney · Commercial Real Estate · Construction · Supply Chain · Universities · Investors — full descriptions are live in the CMS collection.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="block">
+      <div class="block-head"><span class="idx">09</span><h3 class="serif">Closing CTA</h3>
+        <span class="bg"><i style="background:#D9773F"></i> Sunset photo</span></div>
+      <ul class="tight">
+        <li>The only centred section on the page. Full-bleed Arizona sunset, min height <code>min(88vh, 860px)</code>, single overlay <code>58% → 26% → 52%</code> top to bottom.</li>
+        <li>Parallax on this image moves ±35 px based on its position in the viewport — subtler than the hero.</li>
+        <li>Order: label → 40 px → headline (max 15ch so it breaks to three lines) → 30 px → paragraph (max 46ch) → 48 px → button.</li>
+        <li>The button is Warm White on the image, not Sunset — the image is already orange.</li>
+      </ul>
+      <div class="copy">
+        <div class="ck">Copy</div>
+        <dl>
+          <dt>Label</dt><dd>BOOK A STRATEGY SESSION</dd>
+          <dt>Headline</dt><dd class="hl">Ready to Build Your Next Chapter?</dd>
+          <dt>Paragraph</dt><dd>Ninety minutes with the people who will run your expansion. We will tell you honestly whether Arizona is the right answer for your company — including when it is not.</dd>
+          <dt>Button</dt><dd>Book a Strategy Session →</dd>
+        </dl>
+      </div>
+      <div class="note">The last clause — <b>“including when it is not”</b> — is doing real work. It is the sentence that separates a platform from a vendor. Keep it.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CMS ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">E — What is already live on the site</div>
+    <h2 class="sec serif">Four collections, twenty-two items, four drafts.</h2>
+    <p class="intro">These are already created on the Cnc Venture site and populated with the V1 content. Connect Wix repeaters and dynamic pages straight to them — no data entry needed.</p>
+
+    <table>
+      <thead><tr><th style="width:24%">Collection</th><th style="width:9%" class="num">Items</th><th>Fields</th></tr></thead>
+      <tbody>
+        <tr><td><code>ExpansionStories</code><br><span style="color:var(--mute)">Expansion Stories</span></td><td class="num">3</td><td>Headline, Origin City, Destination City, Industry, Summary, Scope of Work, Full Story (rich text), Year, Cover Image, Featured on Homepage, Sort Order</td></tr>
+        <tr><td><code>ArizonaCities</code><br><span style="color:var(--mute)">Arizona City Guide</span></td><td class="num">5</td><td>City, Role in the Valley, Key Fact, Best For, Full Guide (rich text), Cover Image, Sort Order</td></tr>
+        <tr><td><code>Industries</code><br><span style="color:var(--mute)">Industries</span></td><td class="num">6</td><td>Industry, Tagline, Description, What We Do (rich text), Cover Image, Sort Order</td></tr>
+        <tr><td><code>PartnerEcosystem</code><br><span style="color:var(--mute)">Partner Ecosystem</span></td><td class="num">8</td><td>Category, What It Unlocks, Named Partners, Sort Order</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="serif" style="margin-top:44px;font-size:21px;letter-spacing:-.02em">Blog — The Expansion Journal</h3>
+    <table>
+      <thead><tr><th style="width:24%">Category</th><th>Launch article (saved as draft)</th></tr></thead>
+      <tbody>
+        <tr><td>Field Reports</td><td>Why Taiwanese manufacturers are quietly moving to Chandler</td></tr>
+        <tr><td>Market Insights</td><td>What a Scottsdale lease really costs in 2026</td></tr>
+        <tr><td>Playbooks</td><td>The first ninety days on American soil</td></tr>
+        <tr><td>City Guides</td><td>Phoenix, Tempe, Mesa: choosing your first address</td></tr>
+      </tbody>
+    </table>
+    <div class="note">All four are <b>drafts</b>, not published. Read them, adjust the voice to yours, then publish. The remaining Journal topics from the brief — Business Expansion, Industry Reports, Restaurant Expansion, Startup, Manufacturing — should become tags rather than new categories, so the four-section masthead stays clean.</div>
+  </div>
+</section>
+
+<!-- ═══ IMAGERY ═══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">F — Photography</div>
+    <h2 class="sec serif">The one thing still missing.</h2>
+    <p class="intro">Every image in V1 is an abstract Arizona-palette placeholder. They are composed to hold the layout and to look intentional rather than empty, but they are not the finished design. Photography is what will move this site from “well made” to “real”.</p>
+
+    <table>
+      <thead><tr><th style="width:26%">Slot</th><th style="width:20%">Ratio</th><th>Shoot brief</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td class="num">16:9 full bleed</td><td>Arizona at dusk, wide, low horizon, deep negative space in the upper left for the headline. Landscape or a wide city-edge view — not a person, not an office.</td></tr>
+        <tr><td>Why Arizona</td><td class="num">11:14</td><td>Portrait orientation. A real site visit, a corridor, a construction frame, or the valley in late light.</td></tr>
+        <tr><td>Industries ×6</td><td class="num">4:3</td><td>One authentic scene per industry: a working kitchen, product on a real shelf, a small team at a whiteboard, a fab corridor or clean room, a factory floor, a shopfront being fitted out.</td></tr>
+        <tr><td>Expansion Stories ×3</td><td class="num">10:7</td><td>The actual client's actual place. Nothing else will do — this section fails on stock.</td></tr>
+        <tr><td>Journal ×4</td><td class="num">14:9 / 236px</td><td>Editorial, reportage-style. Shot on location for the article, not selected to illustrate it.</td></tr>
+        <tr><td>Cities ×5</td><td class="num">18:24</td><td>Tall. Each city's actual character — Phoenix skyline, Scottsdale street life, ASU and Mill Avenue, Falcon Field, a Gilbert neighbourhood.</td></tr>
+        <tr><td>Closing CTA</td><td class="num">Wide full bleed</td><td>An Arizona sunset. This one can be pure landscape.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn"><b>Do not use:</b> generic office workers, handshakes, people in suits pointing at charts, world maps, circuit-board graphics, glowing network overlays, AI-generated illustration, or any image where you cannot say where it was taken.</div>
+  </div>
+</section>
+
+<!-- ═══ ORDER ═══ -->
+<section style="border-bottom:0">
+  <div class="wrap">
+    <div class="eyebrow">G — Suggested build order</div>
+    <h2 class="sec serif">Where to start on Monday.</h2>
+    <ul class="tight">
+      <li><b>1 · Foundations</b> — Load the twelve site colours and upload Fraunces and Inter. Set the ten text theme styles. Do this before placing a single element; retrofitting type styles across nine sections is a day of work.</li>
+      <li><b>2 · Hero</b> — It sets the standard for the rest. If the hero does not feel right at full width, nothing below it will.</li>
+      <li><b>3 · Why Arizona and the stats row</b> — The two sections that carry the credibility of the whole page.</li>
+      <li><b>4 · The three CMS sections</b> — Industries, Expansion Stories, Arizona City Guide. Data is already there; this is repeater work.</li>
+      <li><b>5 · Journey and Partners</b> — Pure layout and hairlines, no images. Fast.</li>
+      <li><b>6 · Insights</b> — Connect to the blog once the four drafts are reviewed.</li>
+      <li><b>7 · Closing CTA and footer</b> — Then set every reveal animation last, in one pass, so the timing is consistent.</li>
+      <li><b>8 · Mobile</b> — Check the hero eyebrow wrapping, the city strip's horizontal scroll, and the stats going to two columns. Those are the three that break first.</li>
+    </ul>
+    <div class="note" style="margin-top:30px"><b>One discipline above all.</b> When something feels unfinished, the instinct is to add — a divider, an icon, a background shape, another line of copy. On this design the fix is almost always more space. Increase the section padding before you add anything.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">CnC Venture — Wix Build Spec V1.0 · August 2026 · Companion to the homepage design comp. Supersedes nothing; the design file is the visual source of truth.</div>
+</footer>
+
+</body>
+</html>
