@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /src/
+Disallow: /tools/
+
+Sitemap: https://cncventure.com/sitemap.xml

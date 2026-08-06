@@ -1,0 +1,31 @@
+# ── Language negotiation ─────────────────────────────────────────────────
+# Netlify matches the visitor's Accept-Language header before serving "/".
+# Server-side, so there is no flash of the gateway page and no JS required.
+# Traditional Chinese speakers land on /zh-tw/, everyone else on /en/.
+/                 /zh-tw/    302   Language=zh
+/                 /en/       302
+/index.html       /en/       301
+
+# ── Legacy paths from the single-page version ────────────────────────────
+# The v1 site lived at the root. Anything still linking there is sent to the
+# English tree rather than 404ing.
+/about            /en/about            301
+/services         /en/services         301
+/contact          /en/contact          301
+/projects         /en/projects         301
+/book-a-strategy-session   /en/book-a-strategy-session   301
+/industries/*     /en/industries/:splat    301
+/insights/*       /en/insights/:splat      301
+/arizona/*        /en/arizona/:splat       301
+
+# ── Build sources ────────────────────────────────────────────────────────
+# /src/ and /tools/ are kept in the repository for maintenance but are not
+# part of the website. Send anything that reaches them to the homepage.
+/src/*            /en/       301
+/tools/*          /en/       301
+
+# ── Future ───────────────────────────────────────────────────────────────
+# Add new sections in pairs so the two trees stay symmetrical:
+#   /en/industries/food-and-beverage/    /zh-tw/industries/food-and-beverage/
+#   /en/insights/<slug>/                 /zh-tw/insights/<slug>/
+# Do not add a catch-all /* rule: it loops on any missing /en/ path.
