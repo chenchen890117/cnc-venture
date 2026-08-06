@@ -18,6 +18,21 @@
 /insights/*       /en/insights/:splat      301
 /arizona/*        /en/arizona/:splat       301
 
+# ── Sections not yet built ───────────────────────────────────────────────
+# About, Services, Contact, the per-industry pages and the per-city pages are
+# planned but not written. Until they exist their routes resolve to the
+# homepage rather than a 404, in both languages.
+/en/about/        /en/       302
+/en/services/     /en/       302
+/en/contact/      /en/       302
+/en/industries/*  /en/       302
+/en/arizona/*     /en/       302
+/zh-tw/about/     /zh-tw/    302
+/zh-tw/services/  /zh-tw/    302
+/zh-tw/contact/   /zh-tw/    302
+/zh-tw/industries/*  /zh-tw/ 302
+/zh-tw/arizona/*  /zh-tw/    302
+
 # ── Build sources ────────────────────────────────────────────────────────
 # /src/ and /tools/ are kept in the repository for maintenance but are not
 # part of the website. Send anything that reaches them to the homepage.

@@ -499,28 +499,39 @@ body[data-menu-open="true"]{overflow:hidden}
    ═══════════════════════════════════════════════════════════════ */
 html[lang^="zh"]{
   /* CJK needs more air between lines and none of the negative tracking. */
-  --cjk-serif:"Noto Serif TC","Songti TC","PingFang TC","Microsoft JhengHei",serif;
   --cjk-sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
 }
 html[lang^="zh"] body{
   font-family:"Inter",var(--cjk-sans),-apple-system,sans-serif;
   font-size:16.5px;line-height:1.95;letter-spacing:.01em;
 }
+/* Chinese headings are set in a heavy grotesque, not a serif: Fraunces has no
+   CJK coverage, and a synthesised serif reads as a fallback rather than a
+   decision. Latin words inside a Chinese heading still resolve to Fraunces
+   because it is first in the stack and has no CJK glyphs to claim. */
 html[lang^="zh"] .serif,
 html[lang^="zh"] .mobile-nav li a,
 html[lang^="zh"] .city .role,
 html[lang^="zh"] .foot .tagline{
-  font-family:"Fraunces",var(--cjk-serif),Georgia,serif;
+  font-family:"Fraunces",var(--cjk-sans),sans-serif;
+  font-weight:700;
 }
+html[lang^="zh"] .d-xl,
+html[lang^="zh"] .d-l,
+html[lang^="zh"] .d-m,
+html[lang^="zh"] .d-s,
+html[lang^="zh"] .stat .n-txt{font-weight:800;letter-spacing:-.035em}
+html[lang^="zh"] .btn,html[lang^="zh"] .label,html[lang^="zh"] .status,
+html[lang^="zh"] .route,html[lang^="zh"] .chip{font-weight:500}
 /* Latin in a Chinese page — brand words, city names — keeps Latin metrics. */
 html[lang^="zh"] .lat{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em}
 
 /* Display sizes: full-width glyphs read larger, so scale down slightly and
    release the tracking. Line-height opens up to keep the editorial rhythm. */
 html[lang^="zh"] .d-xl{letter-spacing:0}
-html[lang^="zh"] .d-l {font-size:clamp(31px,4.3vw,64px);line-height:1.32;letter-spacing:.005em}
-html[lang^="zh"] .d-m {font-size:clamp(24px,2.7vw,40px);line-height:1.42;letter-spacing:.005em}
-html[lang^="zh"] .d-s {font-size:clamp(20px,1.9vw,27px);line-height:1.5;letter-spacing:.005em}
+html[lang^="zh"] .d-l {font-size:clamp(30px,4.1vw,60px);line-height:1.36}
+html[lang^="zh"] .d-m {font-size:clamp(23px,2.6vw,38px);line-height:1.45}
+html[lang^="zh"] .d-s {font-size:clamp(19px,1.8vw,26px);line-height:1.52}
 html[lang^="zh"] .lede{font-size:clamp(16.5px,1.3vw,19.5px);line-height:1.92;
                        font-weight:400;letter-spacing:.012em}
 html[lang^="zh"] .label{letter-spacing:.1em;font-size:12px}
@@ -546,7 +557,7 @@ html[lang^="zh"] .feature p{max-width:25em}
 html[lang^="zh"] .eco-row p{max-width:32em}
 html[lang^="zh"] .close h2{max-width:12em}
 html[lang^="zh"] .close p{max-width:27em}
-html[lang^="zh"] .stat .n-txt{font-size:clamp(21px,2.1vw,31px);line-height:1.4;letter-spacing:.005em}
+html[lang^="zh"] .stat .n-txt{font-size:clamp(20px,2vw,29px);line-height:1.45}
 html[lang^="zh"] .step h3{font-size:clamp(19px,1.45vw,23px);line-height:1.45}
 html[lang^="zh"] .ind h3{line-height:1.42}
 html[lang^="zh"] .ind-lead .ind h3{font-size:clamp(21px,1.85vw,29px)}
@@ -562,3 +573,141 @@ html[lang^="zh"] .route,html[lang^="zh"] .status{letter-spacing:.06em}
 html[lang^="zh"] .hero h1 .line2,
 html[lang^="zh"] .story .route,
 html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
+
+/* ═══════════════════════════════════════════════════════════════
+   DETAIL PAGES — Journal articles and Expansion projects
+   Shares every token above. Nothing here is duplicated per page.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Breadcrumbs ─────────────────────────────────────────────── */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
+        font-size:12px;letter-spacing:.06em;color:var(--stone-deep);
+        padding-top:clamp(112px,13vh,152px)}
+.crumbs a{transition:color .35s var(--ease)}
+.crumbs a:hover{color:var(--ink)}
+.crumbs .sep{opacity:.45}
+.crumbs [aria-current]{color:var(--on-light)}
+
+/* ── Article masthead ────────────────────────────────────────── */
+.doc-head{padding-block:clamp(30px,4vw,54px) clamp(34px,4.4vw,60px);
+          border-bottom:1px solid var(--rule-light)}
+.doc-kicker{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:clamp(20px,2.4vw,30px)}
+.doc-kicker .cat{color:var(--sunset-deep);font-size:11.5px;letter-spacing:.2em;
+                 text-transform:uppercase;font-weight:500}
+.doc-kicker .sep{width:14px;height:1px;background:currentColor;opacity:.4}
+.doc-kicker .meta{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone-deep)}
+.doc-head h1{max-width:17ch}
+html[lang^="zh"] .doc-head h1{max-width:15em}
+.doc-standfirst{margin-top:clamp(22px,2.6vw,32px);max-width:56ch;
+                font-size:clamp(17px,1.4vw,21px);line-height:1.68;font-weight:300;
+                color:var(--on-light-mute)}
+html[lang^="zh"] .doc-standfirst{max-width:32em;font-weight:400;line-height:1.9}
+
+.doc-hero{margin-top:clamp(34px,4vw,56px);border-radius:2px;overflow:hidden;background:var(--sand)}
+.doc-hero img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.doc-hero figcaption{margin-top:14px;font-size:12.5px;color:var(--stone-deep)}
+
+/* ── Article body: a single readable column, offset like a feature ── */
+.doc-body{display:grid;gap:clamp(30px,3.4vw,64px);padding-block:clamp(48px,6vw,90px)}
+@media(min-width:1000px){.doc-body{grid-template-columns:minmax(180px,20%) minmax(0,1fr)}}
+.doc-aside{font-size:12.5px;line-height:1.7;color:var(--stone-deep)}
+.doc-aside dt{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+              color:var(--stone-deep);margin-top:20px}
+.doc-aside dt:first-child{margin-top:0}
+.doc-aside dd{margin:5px 0 0;color:var(--on-light)}
+@media(min-width:1000px){.doc-aside{position:sticky;top:104px;align-self:start}}
+
+.prose{max-width:68ch}
+html[lang^="zh"] .prose{max-width:40em}
+.prose > * + *{margin-top:1.35em}
+.prose p{font-size:clamp(16.5px,1.15vw,18px);line-height:1.78;color:var(--on-light)}
+html[lang^="zh"] .prose p{line-height:2}
+.prose h2{font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+          font-variation-settings:"SOFT" 0,"WONK" 0;
+          font-size:clamp(24px,2.2vw,33px);line-height:1.2;letter-spacing:-.022em;
+          margin-top:2.1em;padding-top:1.1em;border-top:1px solid var(--rule-light)}
+html[lang^="zh"] .prose h2{font-family:"Fraunces",var(--cjk-sans),sans-serif;
+          font-weight:800;letter-spacing:-.03em;line-height:1.45;font-size:clamp(21px,1.9vw,29px)}
+.prose h3{font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+          font-variation-settings:"SOFT" 0,"WONK" 0;
+          font-size:clamp(19px,1.45vw,23px);line-height:1.3;letter-spacing:-.018em;margin-top:1.9em}
+html[lang^="zh"] .prose h3{font-family:"Fraunces",var(--cjk-sans),sans-serif;
+          font-weight:700;line-height:1.5}
+.prose h2 + p,.prose h3 + p{margin-top:.85em}
+.prose ul,.prose ol{margin-left:0;padding-left:1.15em}
+.prose li{font-size:clamp(16px,1.1vw,17.5px);line-height:1.72;margin-top:.55em;color:var(--on-light)}
+html[lang^="zh"] .prose li{line-height:1.95}
+.prose li::marker{color:var(--sunset)}
+.prose strong{font-weight:500}
+.prose a:not(.btn){border-bottom:1px solid var(--stone);transition:border-color .35s var(--ease)}
+.prose a:not(.btn):hover{border-color:var(--ink)}
+
+/* Pull quote — the one moment of scale inside the column. */
+.pull{margin-block:2.4em;padding:clamp(26px,3vw,40px) 0;
+      border-top:1px solid var(--ink);border-bottom:1px solid var(--rule-light)}
+.pull p{font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+        font-variation-settings:"SOFT" 0,"WONK" 0;
+        font-size:clamp(21px,2.05vw,30px);line-height:1.34;letter-spacing:-.022em;
+        color:var(--ink)}
+html[lang^="zh"] .pull p{font-family:"Fraunces",var(--cjk-sans),sans-serif;
+        font-weight:700;line-height:1.62;letter-spacing:-.02em}
+.pull .who{margin-top:14px;font-size:11.5px;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--stone-deep)}
+
+/* Checklist / key-takeaway panel */
+.panel{margin-block:2.2em;background:var(--beige);border-radius:2px;
+       padding:clamp(24px,2.8vw,38px)}
+.panel h3{margin-top:0;font-size:clamp(18px,1.35vw,22px)}
+.panel ul{list-style:none;padding-left:0;margin-top:1.1em}
+.panel li{position:relative;padding-left:28px;margin-top:.7em;font-size:15.5px;line-height:1.66}
+.panel li::before{content:"";position:absolute;left:2px;top:.62em;
+                  width:9px;height:9px;border:1.5px solid var(--sunset-deep);border-radius:2px}
+.panel .foot{margin-top:1.4em;padding-top:1.1em;border-top:1px solid rgba(18,49,47,.12);
+             font-size:13px;line-height:1.66;color:var(--on-light-mute)}
+
+/* Advisory note — used wherever professional confirmation is required. */
+.advisory{margin-block:2em;padding:18px 20px;border-left:2px solid var(--sunset);
+          background:rgba(217,119,63,.07);font-size:14px;line-height:1.7;
+          color:var(--on-light-mute);border-radius:0 2px 2px 0}
+html[lang^="zh"] .advisory{line-height:1.9}
+
+/* ── Project fact strip ──────────────────────────────────────── */
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+       border-top:1px solid var(--rule-light);margin-top:clamp(34px,4vw,52px)}
+@media(min-width:820px){.facts{grid-template-columns:repeat(4,1fr)}}
+.facts div{padding:clamp(20px,2.2vw,28px) clamp(16px,1.8vw,26px) clamp(20px,2.2vw,28px) 0;
+           border-bottom:1px solid var(--rule-light)}
+@media(min-width:820px){
+  .facts div{border-bottom:0;border-right:1px solid var(--rule-light)}
+  .facts div:last-child{border-right:0}
+  .facts div + div{padding-left:clamp(16px,1.8vw,26px)}
+}
+.facts dt{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--stone-deep)}
+.facts dd{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--on-light)}
+
+/* ── Related content ─────────────────────────────────────────── */
+.related{padding-block:clamp(56px,6.4vw,96px);border-top:1px solid var(--rule-light)}
+.related h2{font-size:clamp(21px,1.8vw,27px);letter-spacing:-.02em}
+.rel-grid{display:grid;gap:clamp(26px,2.8vw,40px);margin-top:clamp(30px,3.2vw,46px)}
+@media(min-width:760px){.rel-grid{grid-template-columns:repeat(2,1fr)}}
+.rel{display:block}
+.rel .frame{overflow:hidden;border-radius:2px;background:var(--sand)}
+.rel img{width:100%;height:clamp(150px,14vw,200px);object-fit:cover;
+         transition:transform 1.5s var(--ease)}
+.rel:hover img{transform:scale(1.05)}
+.rel .kicker{margin-top:18px}
+.rel h3{margin-top:12px;font-size:clamp(18px,1.35vw,22px);line-height:1.34;letter-spacing:-.02em}
+html[lang^="zh"] .rel h3{line-height:1.55}
+.rel p{margin-top:10px;font-size:14px;line-height:1.62;color:var(--on-light-mute)}
+
+/* ── Back link ───────────────────────────────────────────────── */
+.backlink{display:inline-flex;align-items:center;gap:11px;margin-top:clamp(34px,3.6vw,50px);
+          font-size:14px;font-weight:500}
+.backlink .arw{transition:transform .5s var(--ease)}
+.backlink:hover .arw{transform:translateX(-5px)}
+
+/* Detail pages sit on warm white and need the nav solid from the first pixel. */
+.nav.always-solid{background:rgba(2,56,61,.94);
+  -webkit-backdrop-filter:saturate(160%) blur(18px);
+  backdrop-filter:saturate(160%) blur(18px);
+  box-shadow:0 1px 0 rgba(245,241,232,.12)}

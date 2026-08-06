@@ -57,18 +57,18 @@ HEAD = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="{fonts}" rel="stylesheet">
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 '''
 
 FONTS_EN = ('https://fonts.googleapis.com/css2?'
             'family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600'
             '&family=Inter:wght@300;400;500;600&display=swap')
-# The Chinese page additionally loads Noto Serif TC / Noto Sans TC. These are
-# large; they are deliberately NOT loaded on the English page.
+# Chinese pages additionally load Noto Sans TC — 400 for body, 500 for labels
+# and buttons, 700/800 for headings. CJK webfonts are large and are deliberately
+# NOT requested on the English pages.
 FONTS_ZH = (FONTS_EN.replace('&display=swap', '')
-            + '&family=Noto+Sans+TC:wght@300;400;500'
-            + '&family=Noto+Serif+TC:wght@300;400;500;600&display=swap')
+            + '&family=Noto+Sans+TC:wght@400;500;700;800&display=swap')
 
 META = {
     'en': dict(
@@ -93,7 +93,7 @@ META = {
 
 def localise_paths(doc, slug):
     """Point assets at the shared folders and prefix in-site links with /<slug>."""
-    doc = doc.replace('src="img/', 'src="../img/')
+    doc = doc.replace('src="img/', 'src="/img/')
     # Language-independent absolute links (/en/, /zh-tw/) are left alone.
     def prefix(m):
         path = m.group(1)
@@ -131,7 +131,7 @@ def build(slug):
     doc = localise_paths(doc, slug)
     doc = set_language_switch(doc, slug)
     page = HEAD.format(domain=DOMAIN, **meta) + doc.rstrip() + \
-        '\n<script src="../js/main.js" defer></script>\n</body>\n</html>\n'
+        '\n<script src="/js/main.js" defer></script>\n</body>\n</html>\n'
     out = os.path.join(ROOT, slug, 'index.html')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w').write(page)
