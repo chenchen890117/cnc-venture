@@ -581,8 +581,11 @@ html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
    Homepage styles above are untouched.
    ═══════════════════════════════════════════════════════════════ */
 :root{
-  --read:min(800px, 100%);        /* 65–75 characters of Latin text */
-  --breakout:min(1180px, 100%);
+  --read:min(800px,100%);          /* 65–75 characters of Latin text */
+  /* The breakout width is derived from the reading column plus a gutter, so
+     widening the outer margin can never squeeze the text column. */
+  --gutter:clamp(0px,7vw,180px);
+  --breakout:calc(var(--read) + 2 * var(--gutter));
   --doc-rhythm:clamp(64px,8.5vw,120px);
 }
 
@@ -590,13 +593,18 @@ html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
    .wide and .full opt out. This is what creates the rhythm — content
    that changes width as you scroll rather than one uniform block. */
 .doc{
+  /* Article pages carry far wider outer margins than the homepage. The
+     margin is whatever is left after the breakout width, so widening it
+     can never squeeze the reading column. --doc-side is only the floor
+     for narrow screens. */
+  --doc-side:clamp(24px,6vw,104px);
   display:grid;
   grid-template-columns:
-    [full-start] minmax(var(--pad-x),1fr)
-    [wide-start] minmax(0,calc((var(--breakout) - var(--read)) / 2))
+    [full-start] minmax(var(--doc-side),1fr)
+    [wide-start] minmax(0,var(--gutter))
     [text-start] minmax(0,var(--read)) [text-end]
-    minmax(0,calc((var(--breakout) - var(--read)) / 2)) [wide-end]
-    minmax(var(--pad-x),1fr) [full-end];
+    minmax(0,var(--gutter)) [wide-end]
+    minmax(var(--doc-side),1fr) [full-end];
 }
 .doc > *{grid-column:text}
 .doc > .wide{grid-column:wide}
@@ -777,7 +785,7 @@ html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
    still resolve to Fraunces, which has no CJK glyphs to claim. */
 html[lang^="zh"]{--read:min(680px,100%)}          /* ~34 Chinese characters */
 html[lang^="zh"] .doc h1{
-  font-family:"Fraunces",var(--cjk-sans),sans-serif;
+  font-family:var(--cjk-sans);
   font-weight:900;letter-spacing:-.038em;line-height:1.1;
   font-size:clamp(31px,4.3vw,60px);
 }
@@ -787,9 +795,12 @@ html[lang^="zh"] .pull p,
 html[lang^="zh"] .callout h3,
 html[lang^="zh"] .rel h3,
 html[lang^="zh"] .doc-cta h2,
-html[lang^="zh"] .related .hd h2{
-  font-family:"Fraunces",var(--cjk-sans),sans-serif;font-weight:800;
+html[lang^="zh"] .related .hd h2,
+html[lang^="zh"] .doc-standfirst strong{
+  font-family:var(--cjk-sans);font-weight:800;
 }
+/* The section numerals stay Latin — they are labels, not headings. */
+html[lang^="zh"] .prose > h2::before{font-family:"Inter",sans-serif;font-weight:500}
 html[lang^="zh"] .prose > h2{font-size:clamp(23px,2.35vw,34px);line-height:1.38;letter-spacing:-.035em}
 html[lang^="zh"] .prose > h3{font-size:clamp(18px,1.4vw,22px);line-height:1.5;letter-spacing:-.025em}
 html[lang^="zh"] .doc-cta h2{font-size:clamp(27px,3.4vw,50px);line-height:1.28;letter-spacing:-.04em}
