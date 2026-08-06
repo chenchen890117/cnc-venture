@@ -25,7 +25,13 @@ UI = {
         catLabel='Category', readLabel='Reading time', updatedLabel='Updated',
         statusLabel='Status', industryLabel='Industry',
         back='Back to The Expansion Journal', backProjects='Back to Expansion in Progress',
-        related='Related reading',
+        related='Related reading', relatedNote='More from CnC Venture',
+        infoLabel='Project information',
+        docCtaHead='Ready to Explore the U.S. Market?',
+        docCtaBody='Start with a focused conversation about your company, your expansion '
+                   'goals and the markets you are weighing up. We will help you identify the '
+                   'most practical next step.',
+        docCtaBtn='Start Your Expansion Assessment',
         ctaLabel='Book a strategy session',
         ctaHead='Ready to Build Your Next Chapter?',
         ctaBody='Start with a focused conversation about your company, expansion goals, '
@@ -59,7 +65,12 @@ UI = {
         catLabel='分類', readLabel='閱讀時間', updatedLabel='更新',
         statusLabel='狀態', industryLabel='產業',
         back='返回拓展觀點', backProjects='返回進行中的專案',
-        related='延伸閱讀',
+        related='延伸閱讀', relatedNote='更多來自 CnC Venture',
+        infoLabel='專案資訊',
+        docCtaHead='準備好探索美國市場了嗎？',
+        docCtaBody='先從一場聚焦的對話開始——談你的公司、拓展目標，以及你正在權衡的市場。'
+                   '我們會協助你找出最務實的下一步。',
+        docCtaBtn='開始美國拓展評估',
         ctaLabel='預約策略諮詢',
         ctaHead='準備好，寫下你的下一章了嗎？',
         ctaBody='先從一場聚焦的對話開始——談你的公司、拓展目標、時程，以及你正在評估的'
@@ -152,6 +163,9 @@ PAGES['arizona-gateway-for-taiwanese-companies'] = {
                   'the cost of learning it, and that cost falls sharply when there are people '
                   'nearby who will tell you honestly what a thing should cost and how long it '
                   'should take.'),
+            ('fig', 'city-phoenix.jpg', 'Downtown Phoenix',
+             'Downtown Phoenix. Beyond the manufacturing story, Greater Phoenix is a '
+             'metropolitan market in its own right.'),
             ('h2', 'Greater Phoenix as a business market'),
             ('p', 'Beyond manufacturing, Greater Phoenix is a large and still-growing '
                   'metropolitan market in its own right — one of the major population centres '
@@ -202,7 +216,7 @@ PAGES['arizona-gateway-for-taiwanese-companies'] = {
             ('p', 'The most common failure in market selection is deciding first and '
                   'validating afterwards. A more useful sequence starts with questions that '
                   'have concrete answers.'),
-            ('panel', 'Before you commit to Arizona', [
+            ('panel', 'Key questions', 'Before you commit to Arizona', [
                 'Where are your existing or target U.S. customers, and how much does '
                 'proximity actually change the relationship?',
                 'What does your business need most — land, labour, talent, logistics, or '
@@ -261,6 +275,8 @@ PAGES['arizona-gateway-for-taiwanese-companies'] = {
                   '架構的專業人士，以及已經犯過你正打算犯的錯的經營者。'),
             ('p', '這件事比聽起來重要。進入一個市場的成本，很大一部分其實是「學會這個市場」的'
                   '成本；而當附近有人願意誠實告訴你某件事該花多少錢、該花多久，這個成本會大幅下降。'),
+            ('fig', 'city-phoenix.jpg', 'Phoenix 市中心',
+             'Phoenix 市中心。撇開製造業敘事，大鳳凰城本身就是一個完整的都會市場。'),
             ('h2', '大鳳凰城本身就是一個市場'),
             ('p', '撇開製造業不談，大鳳凰城本身就是一個規模可觀且持續成長的都會市場——美國西部'
                   '主要人口中心之一，擁有自己的消費人口、服務業與營建產業，運作邏輯與半導體'
@@ -296,7 +312,7 @@ PAGES['arizona-gateway-for-taiwanese-companies'] = {
             ('h2', '決定之前，該先評估什麼'),
             ('p', '市場選擇最常見的失敗，是先決定、再驗證。比較有用的順序，是從有具體答案的'
                   '問題開始。'),
-            ('panel', '在確定亞利桑那之前，先回答這六題', [
+            ('panel', '關鍵提問', '在確定亞利桑那之前，先回答這六題', [
                 '你現有或目標的美國客戶在哪裡？地理上的接近，實際上會改變多少關係？',
                 '你的事業最需要什麼——土地、勞動力、人才、物流，還是消費密度？請排序。',
                 '大鳳凰城裡哪一座城市滿足這個需求？你實地走過了嗎？',
@@ -488,11 +504,14 @@ PAGES['phoenix-metro-market-guide'] = {
         ] + city_blocks(CITIES_EN, [
             'Suitable for:', 'Customer profile:', 'Commercial environment:',
             'Location considerations:', 'Potential limitations:']) + [
+            ('fig', 'city-tempe.jpg', 'The light rail corridor between Phoenix and Tempe',
+             'The light rail corridor. Fifteen minutes apart can mean two municipalities, '
+             'two permitting timelines and two different answers.'),
             ('h2', 'How to actually decide'),
             ('p', 'The choice depends on six variables, and they are rarely weighted equally. '
                   'Work through them in order and the field usually narrows to two cities '
                   'quickly.'),
-            ('panel', 'The six variables', [
+            ('panel', 'How to decide', 'The six variables', [
                 '<strong>Business model.</strong> Do you need footfall, proximity to a '
                 'customer, land, or none of the above?',
                 '<strong>Customers.</strong> Where do they live or operate, and how far will '
@@ -536,10 +555,12 @@ PAGES['phoenix-metro-market-guide'] = {
         ] + city_blocks(CITIES_ZH, [
             '適合業態：', '客群樣貌：', '商業環境：',
             '選址考量：', '可能的限制：']) + [
+            ('fig', 'city-tempe.jpg', 'Phoenix 與 Tempe 之間的輕軌廊帶',
+             '輕軌廊帶。相隔十五分鐘車程，可能就是兩個市政區、兩套證照時程、兩種答案。'),
             ('h2', '實際上該怎麼決定'),
             ('p', '這個選擇取決於六個變數，而它們的權重通常並不相等。照順序走一遍，'
                   '候選城市多半會很快收斂到兩個。'),
-            ('panel', '六個變數', [
+            ('panel', '如何決定', '六個變數', [
                 '<strong>商業模式。</strong>你需要的是人流、鄰近特定客戶、土地，還是以上皆非？',
                 '<strong>客群。</strong>他們住在哪裡或在哪裡營運？為了你賣的東西，他們願意'
                 '移動多遠？',
@@ -617,6 +638,8 @@ PAGES['first-steps-before-us-expansion'] = {
             ('p', 'The practical failure mode is sequencing them one at a time and discovering '
                   'in month six that decision two has constrained decision five. Get all five '
                   'advisors in one conversation early, even briefly.'),
+            ('pull', 'Incorporation feels like progress. That is exactly why it is so often '
+             'done too early.', None),
             ('h2', 'Brand localization'),
             ('p', 'Localization is not translation. It covers the name and whether it is '
                   'pronounceable and available; the positioning and whether it means anything '
@@ -633,6 +656,8 @@ PAGES['first-steps-before-us-expansion'] = {
                   'partner, evaluate on three things: have they done this specific thing '
                   'before, can you speak to someone they did it for, and are their incentives '
                   'aligned with yours or with the other side of the table?'),
+            ('fig', 'hero-metro-guide.jpg', 'A Greater Phoenix city centre at sunset',
+             'Site selection should follow the business model, not lead it.'),
             ('h2', 'Site selection and operational planning'),
             ('p', 'Site selection should follow the business model, not lead it. Once the '
                   'model is fixed, the questions become concrete: which city, which trade '
@@ -657,7 +682,7 @@ PAGES['first-steps-before-us-expansion'] = {
                 'Treating professional advisors as a cost to minimise rather than the '
                 'foundation everything else sits on.',
             ]),
-            ('panel', 'Practical preparation checklist', [
+            ('panel', 'Key takeaways', 'Practical preparation checklist', [
                 'One-sentence statement of why you are expanding.',
                 'Written U.S. business model, with the alternatives you rejected and why.',
                 'Market validation evidence — conversations, observations, pricing tests.',
@@ -713,6 +738,7 @@ PAGES['first-steps-before-us-expansion'] = {
                   '都有自己獨立的要求與時程。'),
             ('p', '實務上最常見的失敗模式，是一條一條依序處理，然後在第六個月發現第二個決定'
                   '已經限制了第五個決定。盡早把五位顧問拉進同一場對話，哪怕只是短短一次。'),
+            ('pull', '設立公司會讓人覺得「有在前進」——這正是它常常被太早執行的原因。', None),
             ('h2', '品牌在地化'),
             ('p', '在地化不是翻譯。它包含名稱是否好唸、是否可註冊；定位對美國消費者是否有意義；'
                   '包裝、標示與宣稱；視覺識別；以及你如何講述自己從哪裡來——'
@@ -725,6 +751,8 @@ PAGES['first-steps-before-us-expansion'] = {
             ('p', '不論對象是經銷商、房東、承包商或營運夥伴，都用三件事評估：'
                   '他們做過這件「特定的事」嗎？你能不能跟他們服務過的對象直接談？'
                   '他們的誘因是站在你這一邊，還是桌子的另一邊？'),
+            ('fig', 'hero-metro-guide.jpg', '黃昏時分的大鳳凰城市中心',
+             '選址應該跟著商業模式走，而不是反過來。'),
             ('h2', '選址與營運規劃'),
             ('p', '選址應該跟著商業模式走，而不是反過來。模式確定之後，問題就變得具體：'
                   '哪座城市、哪個商圈、多大坪數、什麼屋況、什麼時程，以及這個空間在'
@@ -743,7 +771,7 @@ PAGES['first-steps-before-us-expansion'] = {
                 '編了施工預算，卻沒編營收之前那幾個月的薪資與租金。',
                 '把專業顧問當成要壓低的成本，而不是其他一切賴以站立的基礎。',
             ]),
-            ('panel', '出發前的實務檢核表', [
+            ('panel', '重點整理', '出發前的實務檢核表', [
                 '一句話說明你為什麼要拓展。',
                 '書面的美國商業模式，並記錄你排除了哪些選項、為什麼。',
                 '市場驗證的證據——對話紀錄、現場觀察、定價測試。',
@@ -842,6 +870,9 @@ PAGES['opening-a-restaurant-in-arizona'] = {
                   'work is triggered, and how many review cycles the plans go through. Track '
                   'the schedule against the licensing timeline, not against the contractor\'s '
                   'optimism.'),
+            ('fig', 'ind-restaurant.jpg', 'Restaurant patio at dusk in the Phoenix area',
+             'Front of house is the part everyone plans for. The opening date is usually '
+             'decided behind it.'),
             ('h2', 'Food suppliers and cold-chain logistics'),
             ('p', 'Map your menu against what is actually available locally, what has to come '
                   'from elsewhere in the U.S., and what would have to be imported. For imported '
@@ -884,7 +915,7 @@ PAGES['opening-a-restaurant-in-arizona'] = {
                 'Building the menu before confirming the supply chain that has to support it.',
                 'Treating the soft opening as a marketing event rather than an operational one.',
             ]),
-            ('panel', 'Pre-entry checklist', [
+            ('panel', 'Key takeaways', 'Pre-entry checklist', [
                 'Concept positioning written down, with the American customer described '
                 'specifically.',
                 'Two candidate cities and at least three candidate trade areas, all visited.',
@@ -960,6 +991,8 @@ PAGES['opening-a-restaurant-in-arizona'] = {
                   '最會影響預算的變數是：既有空間的屋況、機電範圍、是否觸發結構工程，'
                   '以及圖說跑了幾輪審查。追蹤時程時，請對照證照的時間軸，'
                   '而不是承包商的樂觀預估。'),
+            ('fig', 'ind-restaurant.jpg', '鳳凰城地區餐廳庭院的黃昏景象',
+             '外場是每個人都會規劃的部分，但開幕日期通常是在它後面被決定的。'),
             ('h2', '食材供應與冷鏈'),
             ('p', '把菜單逐項對照：哪些在地就能取得、哪些要從美國其他地方調度、'
                   '哪些必須進口。進口食材要及早確認標示與法規要求，'
@@ -993,7 +1026,7 @@ PAGES['opening-a-restaurant-in-arizona'] = {
                 '在確認能支撐它的供應鏈之前就把菜單定案。',
                 '把試營運當成行銷活動，而不是營運壓力測試。',
             ]),
-            ('panel', '進入市場前的檢核表', [
+            ('panel', '重點整理', '進入市場前的檢核表', [
                 '概念定位已書面化，並具體描述了美國客群。',
                 '兩座候選城市、至少三個候選商圈，且全部實地走過。',
                 '二手空間與毛胚屋的取捨已決定，且各有裝修成本估算。',
@@ -1018,7 +1051,7 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
     'type': 'project', 'hero': 'hero-restaurant-project.jpg',
     'related': ['opening-a-restaurant-in-arizona', 'phoenix-metro-market-guide'],
     'en': dict(
-        category='Food & Beverage', status='Market Exploration · In Progress',
+        category='Food & Beverage', status='Market Exploration · In Progress', statusShort='Market Exploration',
         industry='Food & Beverage', dateLabel='August 2026',
         crumb='Restaurant group exploring Phoenix',
         title='Taiwanese Restaurant Group Exploring Phoenix',
@@ -1057,6 +1090,8 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
             ('p', 'Build-out and occupancy conditions in the metro have historically been more '
                   'forgiving than a coastal debut, which changes what a first location can be '
                   'attempted on.'),
+            ('pull', 'The goal is not to open quickly. The goal is to choose the right '
+             'market.', None),
             ('h2', 'Current progress'),
             ('ul', [
                 'Market visits across multiple Phoenix Metro cities, observing dayparts and '
@@ -1076,6 +1111,9 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
                          'selected, no lease negotiated, no permit filed and no opening '
                          'scheduled. All regulatory and licensing matters will be confirmed '
                          'with qualified U.S. professionals before any commitment is made.'),
+            ('fig', 'city-scottsdale.jpg', 'Scottsdale, Arizona',
+             'Scottsdale. One of several sub-markets under evaluation — each with a different '
+             'customer and a different cost base.'),
             ('h2', "CnC Venture's role"),
             ('p', 'We coordinate the exploration itself: structuring the visit programme so '
                   'that the group sees comparable conditions across cities rather than a '
@@ -1089,8 +1127,7 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
             ('p', 'Narrowing to a shortlist of trade areas, developing comparative build-out '
                   'and occupancy scenarios, and determining the appropriate entry timing. Only '
                   'after that would site negotiation begin.'),
-            ('h2', 'Key considerations'),
-            ('ul', [
+            ('panel', 'Key takeaways', 'What this engagement turns on', [
                 'Whether the concept translates without losing what makes it distinctive.',
                 'Second-generation restaurant space versus shell, and what each implies for '
                 'timeline and budget.',
@@ -1102,7 +1139,7 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
         ],
     ),
     'zh-tw': dict(
-        category='餐飲品牌', status='市場探索 · 進行中',
+        category='餐飲品牌', status='市場探索 · 進行中', statusShort='市場探索',
         industry='餐飲品牌', dateLabel='2026 年 8 月',
         crumb='台灣餐飲品牌鳳凰城評估',
         title='台灣餐飲品牌鳳凰城市場拓展評估',
@@ -1131,6 +1168,7 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
                   '落在不同的次市場，結果可能完全不同。'),
             ('p', '這個都會區的裝修與租金條件，長期以來也比在沿海城市首發來得寬容，'
                   '這會改變第一間店可以嘗試的規模。'),
+            ('pull', '目標不是快點開幕，而是選對市場。', None),
             ('h2', '目前進度'),
             ('ul', [
                 '跨大鳳凰城多個城市的實地考察，親自觀察不同時段的商圈樣貌。',
@@ -1144,6 +1182,8 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
             ('advisory', '本專案中沒有任何事項已經定案。尚未選定地點、未進行租約談判、'
                          '未送出任何證照申請，也沒有排定開幕。所有法規與證照事項，'
                          '都會在做出任何承諾之前，與具備資格的美國專業人士確認。'),
+            ('fig', 'city-scottsdale.jpg', '亞利桑那州 Scottsdale',
+             'Scottsdale。評估中的次市場之一——每一個都對應不同的客群與不同的成本結構。'),
             ('h2', 'CnC Venture 的角色'),
             ('p', '我們負責整個探索流程的協調：設計考察行程，讓集團看到的是跨城市的'
                   '可比條件，而不是一趟被安排好的展示；安排政府資源與專業顧問的引薦；'
@@ -1153,8 +1193,7 @@ PAGES['taiwanese-restaurant-group-exploring-phoenix'] = {
             ('h2', '下一階段'),
             ('p', '收斂候選商圈名單、建立可比較的裝修與租金情境試算，並判斷合適的進入時機。'
                   '在那之後，才會開始進行物件談判。'),
-            ('h2', '關鍵考量'),
-            ('ul', [
+            ('panel', '重點整理', '這個專案的關鍵取決於什麼', [
                 '這個概念能否在轉換語境後，仍保有它之所以獨特的地方。',
                 '二手餐廳空間與毛胚屋的取捨，以及各自對時程與預算的意義。',
                 '所選市政區的證照與執照流程順序。',
@@ -1173,7 +1212,7 @@ PAGES['taiwan-startup-delegation-arizona'] = {
     'type': 'project', 'hero': 'hero-startup-project.jpg',
     'related': ['arizona-gateway-for-taiwanese-companies', 'first-steps-before-us-expansion'],
     'en': dict(
-        category='Technology & Startups', status='Ecosystem Connection · In Progress',
+        category='Technology & Startups', status='Ecosystem Connection · In Progress', statusShort='Ecosystem Connection',
         industry='Technology & Startups', dateLabel='August 2026',
         crumb='Taiwan startup delegation',
         title="Connecting Taiwan Startups with Arizona's Innovation Ecosystem",
@@ -1207,6 +1246,11 @@ PAGES['taiwan-startup-delegation-arizona'] = {
                   'manufacturing base. For an early-stage company, a forming ecosystem can '
                   'offer more access than a mature one — shorter routes to institutions, more '
                   'willingness to meet, and less competition for attention.'),
+            ('pull', 'A forming ecosystem offers more access than a mature one — and less '
+             'competition for attention.', None),
+            ('fig', 'ind-startup.jpg', 'Mixed-use development in midtown Phoenix',
+             'Midtown Phoenix. The ecosystem is being built now, which is why the routes into '
+             'it are still short.'),
             ('h2', 'Current progress'),
             ('ul', [
                 'Founder exchange sessions between Taiwanese and Arizona-based companies.',
@@ -1237,8 +1281,7 @@ PAGES['taiwan-startup-delegation-arizona'] = {
             ('p', 'Continued engagement with the institutions already met, structured follow-up '
                   'for companies with specific interest, and support for those choosing to '
                   'move toward a formal market-entry evaluation.'),
-            ('h2', 'Key considerations'),
-            ('ul', [
+            ('panel', 'Key takeaways', 'What this engagement turns on', [
                 'Whether the company\'s customers or partners are actually in this ecosystem, '
                 'or elsewhere in the U.S.',
                 'What stage the company is at, and whether a U.S. presence is premature.',
@@ -1250,7 +1293,7 @@ PAGES['taiwan-startup-delegation-arizona'] = {
         ],
     ),
     'zh-tw': dict(
-        category='科技與新創', status='生態系連結 · 進行中',
+        category='科技與新創', status='生態系連結 · 進行中', statusShort='生態系連結',
         industry='科技與新創', dateLabel='2026 年 8 月',
         crumb='台灣新創代表團',
         title='串聯台灣新創與亞利桑那創新生態系',
@@ -1276,6 +1319,9 @@ PAGES['taiwan-startup-delegation-arizona'] = {
             ('p', '亞利桑那的創新生態系仍圍繞著先進製造基礎持續成形。對早期公司而言，'
                   '一個「正在形成」的生態系，往往比成熟生態系更容易進入——'
                   '接觸機構的路徑更短、對方更願意見面，注意力的競爭也較小。'),
+            ('pull', '正在形成的生態系，比成熟的更容易進入——注意力的競爭也比較小。', None),
+            ('fig', 'ind-startup.jpg', 'Phoenix 中城的複合式開發街區',
+             'Phoenix 中城。這個生態系正在建構中，這也是為什麼進入它的路徑還很短。'),
             ('h2', '目前進度'),
             ('ul', [
                 '台灣與亞利桑那在地公司之間的創辦人交流場次。',
@@ -1297,8 +1343,7 @@ PAGES['taiwan-startup-delegation-arizona'] = {
             ('h2', '下一階段'),
             ('p', '與已經接觸的機構持續互動，為具體有意願的公司安排結構化的後續跟進，'
                   '並協助決定要進入正式市場評估的公司往下一步走。'),
-            ('h2', '關鍵考量'),
-            ('ul', [
+            ('panel', '重點整理', '這個專案的關鍵取決於什麼', [
                 '公司的客戶或夥伴，實際上是在這個生態系裡，還是在美國其他地方。',
                 '公司目前處於什麼階段，設立美國據點是否為時過早。',
                 '哪一種公司架構符合公司的募資與營運規劃。',
@@ -1316,7 +1361,7 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
     'type': 'project', 'hero': 'hero-brand-project.jpg',
     'related': ['first-steps-before-us-expansion', 'phoenix-metro-market-guide'],
     'en': dict(
-        category='Consumer & Lifestyle Brands', status='U.S. Market Entry · In Progress',
+        category='Consumer & Lifestyle Brands', status='U.S. Market Entry · In Progress', statusShort='U.S. Market Entry',
         industry='Consumer & Lifestyle Brands', dateLabel='August 2026',
         crumb='Consumer brand market entry',
         title='Preparing a Taiwanese Consumer Brand for U.S. Market Entry',
@@ -1350,6 +1395,11 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
                   'meaningful but small enough that a first attempt can be adjusted without '
                   'writing off a national rollout. Its metro sub-markets also allow for '
                   'testing across quite different customer profiles within a short drive.'),
+            ('pull', 'Large enough for the result to mean something. Small enough that a '
+             'first attempt can be adjusted.', None),
+            ('fig', 'ind-brand.jpg', 'Retail architecture in Old Town Scottsdale',
+             'Old Town Scottsdale. Positioning becomes concrete the moment a street is '
+             'chosen.'),
             ('h2', 'Current progress'),
             ('ul', [
                 'Market-entry strategy development, including phased scenarios and stop points.',
@@ -1381,8 +1431,7 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
             ('p', 'Finalising the entry structure, completing localization decisions, and '
                   'defining the first-phase launch scope with the criteria that would justify '
                   'proceeding to phase two.'),
-            ('h2', 'Key considerations'),
-            ('ul', [
+            ('panel', 'Key takeaways', 'What this engagement turns on', [
                 'Whether the brand story is an asset in the U.S. context or needs reframing.',
                 'Price architecture against comparable products already on American shelves.',
                 'Labelling, ingredient and claim requirements, which vary by product category.',
@@ -1393,7 +1442,7 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
         ],
     ),
     'zh-tw': dict(
-        category='消費與生活品牌', status='市場進入 · 進行中',
+        category='消費與生活品牌', status='市場進入 · 進行中', statusShort='市場進入',
         industry='消費與生活品牌', dateLabel='2026 年 8 月',
         crumb='消費品牌美國市場進入',
         title='協助台灣消費品牌準備進入美國市場',
@@ -1420,6 +1469,9 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
             ('p', '亞利桑那提供的首發市場，規模大到足以讓結果具有意義，'
                   '又小到讓第一次嘗試可以調整，而不必把全國布局一起賠掉。'
                   '這個都會區的次市場，也讓品牌能在短短的車程內測試相當不同的客群樣貌。'),
+            ('pull', '大到足以讓結果有意義，小到讓第一次嘗試還能修正。', None),
+            ('fig', 'ind-brand.jpg', 'Old Town Scottsdale 的零售建築',
+             'Old Town Scottsdale。定位的抉擇，會在選定一條街的那一刻變得具體。'),
             ('h2', '目前進度'),
             ('ul', [
                 '市場進入策略建構，包含分階段情境與停損點設計。',
@@ -1443,8 +1495,7 @@ PAGES['taiwanese-consumer-brand-us-market-entry'] = {
             ('h2', '下一階段'),
             ('p', '確定進入架構、完成在地化決策，並定義第一階段的上市範圍，'
                   '以及什麼樣的結果才足以支持進入第二階段。'),
-            ('h2', '關鍵考量'),
-            ('ul', [
+            ('panel', '重點整理', '這個專案的關鍵取決於什麼', [
                 '品牌故事在美國語境中是資產，還是需要重新框架。',
                 '相對於美國貨架上既有的可比產品，價格架構是否站得住。',
                 '標示、成分與產品宣稱的要求，會因產品類別而異。',

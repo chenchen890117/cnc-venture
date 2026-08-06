@@ -51,12 +51,18 @@ def render_blocks(blocks):
             out.append(f'<ol>{items}</ol>')
         elif kind == 'pull':
             who = f'<div class="who">{rest[1]}</div>' if len(rest) > 1 and rest[1] else ''
-            out.append(f'<blockquote class="pull"><p>{rest[0]}</p>{who}</blockquote>')
+            out.append(f'<blockquote class="pull"><p class="serif">{rest[0]}</p>{who}</blockquote>')
         elif kind == 'panel':
-            title, items = rest[0], rest[1]
-            foot = f'<div class="foot">{rest[2]}</div>' if len(rest) > 2 and rest[2] else ''
+            label, title, items = rest[0], rest[1], rest[2]
+            foot = f'<div class="cnote">{rest[3]}</div>' if len(rest) > 3 and rest[3] else ''
             li = ''.join(f'<li>{i}</li>' for i in items)
-            out.append(f'<aside class="panel"><h3>{title}</h3><ul>{li}</ul>{foot}</aside>')
+            out.append(f'<aside class="callout"><div><div class="lbl">{label}</div>'
+                       f'<h3 class="serif">{title}</h3></div>'
+                       f'<div><ul>{li}</ul>{foot}</div></aside>')
+        elif kind == 'fig':
+            cap = f'<figcaption>{rest[2]}</figcaption>' if len(rest) > 2 and rest[2] else ''
+            out.append(f'<figure class="docfig"><img src="/img/{rest[0]}" alt="{rest[1]}" '
+                       f'loading="lazy">{cap}</figure>')
         elif kind == 'advisory':
             out.append(f'<aside class="advisory">{rest[0]}</aside>')
         else:
@@ -219,38 +225,40 @@ def related_block(lang, slugs):
     for sl in slugs:
         r = PAGES[sl][lang]
         folder = 'insights' if PAGES[sl]['type'] == 'article' else 'projects'
-        meta = r['readingTime'] if PAGES[sl]['type'] == 'article' else r['status']
-        cards += f'''
+        m = r['readingTime'] if PAGES[sl]['type'] == 'article' else r['statusShort']
+        cards += f"""
       <a class="rel reveal" href="/{s}/{folder}/{sl}/">
         <div class="frame"><img src="/img/{PAGES[sl]['hero']}" alt="{r['heroAlt']}" loading="lazy"></div>
-        <div class="kicker label"><span>{r['category']}</span><span class="sep" aria-hidden="true"></span><span>{meta}</span></div>
+        <div class="kicker"><span class="cat">{r['category']}</span><span class="sep" aria-hidden="true"></span><span class="m">{m}</span></div>
         <h3 class="serif">{r['title']}</h3>
         <p>{r['cardBlurb']}</p>
-      </a>'''
-    return f'''
-<section class="related on-light">
+      </a>"""
+    return f"""
+<section class="related">
   <div class="wrap">
-    <h2 class="serif reveal">{ui['related']}</h2>
+    <div class="hd reveal">
+      <h2 class="serif">{ui['related']}</h2>
+      <span class="note">{ui['relatedNote']}</span>
+    </div>
     <div class="rel-grid">{cards}
     </div>
   </div>
 </section>
-'''
+"""
 
 
 def closing_cta(lang):
     ui = UI[lang]
-    return f'''
-<section class="close">
-  <div class="close-media"><img src="/img/cta-sunset.jpg" alt="{ui['ctaImgAlt']}"></div>
+    return f"""
+<section class="doc-cta">
   <div class="wrap">
     <div class="label reveal">{ui['ctaLabel']}</div>
-    <h2 class="serif d-l reveal" style="--d:80ms">{ui['ctaHead']}</h2>
-    <p class="lede reveal" style="--d:160ms">{ui['ctaBody']}</p>
-    <a class="btn btn-solid reveal" style="--d:240ms" href="{CTA}" target="_blank" rel="noopener noreferrer">{ui['ctaLong']} <span class="arw" aria-hidden="true">→</span></a>
+    <h2 class="serif reveal" style="--d:80ms">{ui['docCtaHead']}</h2>
+    <p class="reveal" style="--d:160ms">{ui['docCtaBody']}</p>
+    <a class="btn btn-solid reveal" style="--d:240ms" href="{CTA}" target="_blank" rel="noopener noreferrer">{ui['docCtaBtn']} <span class="arw" aria-hidden="true">→</span></a>
   </div>
 </section>
-'''
+"""
 
 
 def build_page(slug, lang):
@@ -269,49 +277,57 @@ def build_page(slug, lang):
               f'<span class="sep" aria-hidden="true">/</span>'
               f'<span aria-current="page">{p["crumb"]}</span></nav>')
 
+    # Article metadata appears exactly once. Projects get the information
+    # panel; articles get the meta rule. Neither repeats the other.
     if meta['type'] == 'article':
-        kicker_meta = f'<span class="meta">{p["readingTime"]}</span>' \
-                      f'<span class="sep" aria-hidden="true"></span>' \
-                      f'<span class="meta">{p["dateLabel"]}</span>'
-        aside = (f'<dl><dt>{ui["catLabel"]}</dt><dd>{p["category"]}</dd>'
-                 f'<dt>{ui["readLabel"]}</dt><dd>{p["readingTime"]}</dd>'
-                 f'<dt>{ui["updatedLabel"]}</dt><dd>{p["dateLabel"]}</dd></dl>')
-        facts = ''
+        status_pill = ''
+        meta_row = (f'<span>{ui["catLabel"]}: {p["category"]}</span>'
+                    f'<span>{p["readingTime"]}</span>'
+                    f'<span>{ui["updatedLabel"]}: {p["dateLabel"]}</span>')
+        infocard = ''
     else:
-        kicker_meta = f'<span class="meta">{p["status"]}</span>'
-        aside = (f'<dl><dt>{ui["statusLabel"]}</dt><dd>{p["status"]}</dd>'
-                 f'<dt>{ui["industryLabel"]}</dt><dd>{p["industry"]}</dd>'
-                 f'<dt>{ui["updatedLabel"]}</dt><dd>{p["dateLabel"]}</dd></dl>')
-        facts = '<dl class="facts reveal">' + ''.join(
-            f'<div><dt>{k}</dt><dd>{v}</dd></div>' for k, v in p['facts']) + '</dl>'
+        status_pill = f'<span class="status"><span class="dot" aria-hidden="true"></span>{p["statusShort"]}</span>'
+        meta_row = (f'<span>{ui["industryLabel"]}: {p["industry"]}</span>'
+                    f'<span>{ui["updatedLabel"]}: {p["dateLabel"]}</span>')
+        rows = ''
+        for i, (k, v) in enumerate(p['facts']):
+            live = ' live' if i == 0 else ''
+            rows += f'<div class="row{live}"><dt>{k}</dt><dd>{v}</dd></div>'
+        infocard = (f'<section class="infocard reveal" aria-label="{ui["infoLabel"]}">'
+                    f'<div class="hd">{ui["infoLabel"]}</div><dl>{rows}</dl></section>')
 
     doc = f'''{chrome_head(lang, p, slug, path)}{nav(lang, path)}
 <main id="main">
-<article class="on-light">
-  <div class="wrap">
-    {crumbs}
-    <div class="doc-head">
-      <div class="doc-kicker reveal">
-        <span class="cat">{p['category']}</span>
-        <span class="sep" aria-hidden="true"></span>
-        {kicker_meta}
-      </div>
-      <h1 class="serif d-l reveal" style="--d:60ms">{p['title']}</h1>
-      <p class="doc-standfirst reveal" style="--d:140ms">{p['standfirst']}</p>
-      <figure class="doc-hero reveal" style="--d:220ms">
-        <img src="/img/{meta['hero']}" alt="{p['heroAlt']}">
-      </figure>
-      {facts}
-    </div>
+<article class="doc on-light">
 
-    <div class="doc-body">
-      <aside class="doc-aside reveal">{aside}</aside>
-      <div class="prose reveal" style="--d:80ms">
-        {render_blocks(p['body'])}
-        <p><a class="backlink" href="/{s}/{folder}/"><span class="arw" aria-hidden="true">←</span> {ui['back'] if meta['type']=='article' else ui['backProjects']}</a></p>
-      </div>
-    </div>
+  <div class="wide doc-opening reveal">
+    <figure>
+      <img src="/img/{meta['hero']}" alt="{p['heroAlt']}">
+      {f'<figcaption>{p["heroCaption"]}</figcaption>' if p.get('heroCaption') else ''}
+    </figure>
   </div>
+
+  {crumbs}
+
+  <div class="doc-eyebrow reveal">
+    <span class="cat">{p['category']}</span>
+    {status_pill}
+  </div>
+
+  <h1 class="serif reveal" style="--d:60ms">{p['title']}</h1>
+  <p class="doc-standfirst reveal" style="--d:130ms">{p['standfirst']}</p>
+  <div class="doc-meta reveal" style="--d:200ms">{meta_row}</div>
+
+  {infocard}
+
+  <div class="prose">
+    {render_blocks(p['body'])}
+  </div>
+
+  <div class="doc-end">
+    <a class="backlink" href="/{s}/{folder}/"><span class="arw" aria-hidden="true">←</span> {ui['back'] if meta['type']=='article' else ui['backProjects']}</a>
+  </div>
+
 </article>
 {related_block(lang, meta['related'])}{closing_cta(lang)}</main>
 {footer(lang)}'''
@@ -379,11 +395,11 @@ def build_index(folder, lang):
     cards = ''
     for sl in slugs:
         r = PAGES[sl][lang]
-        meta = r['readingTime'] if folder == 'insights' else r['status']
+        meta = r['readingTime'] if folder == 'insights' else r['statusShort']
         cards += f'''
       <a class="rel reveal" href="/{s}/{folder}/{sl}/">
         <div class="frame"><img src="/img/{PAGES[sl]['hero']}" alt="{r['heroAlt']}" loading="lazy"></div>
-        <div class="kicker label"><span>{r['category']}</span><span class="sep" aria-hidden="true"></span><span>{meta}</span></div>
+        <div class="kicker"><span class="cat">{r['category']}</span><span class="sep" aria-hidden="true"></span><span class="m">{meta}</span></div>
         <h3 class="serif">{r['title']}</h3>
         <p>{r['cardBlurb']}</p>
       </a>'''
@@ -392,14 +408,14 @@ def build_index(folder, lang):
               f'<span aria-current="page">{m["crumb"]}</span></nav>')
     doc = f'''{chrome_head(lang, page, folder, folder + "/")}{nav(lang, folder + "/")}
 <main id="main">
-<section class="on-light">
+<section class="doc on-light" style="padding-top:clamp(96px,12vh,140px)">
+  {crumbs}
+  <h1 class="serif reveal">{m['title']}</h1>
+  <p class="doc-standfirst reveal" style="--d:120ms">{m['stand']}</p>
+</section>
+<section class="related" style="background:var(--warm-white)">
   <div class="wrap">
-    {crumbs}
-    <div class="doc-head">
-      <h1 class="serif d-l reveal">{m['title']}</h1>
-      <p class="doc-standfirst reveal" style="--d:120ms">{m['stand']}</p>
-    </div>
-    <div class="rel-grid" style="margin-top:clamp(40px,4.4vw,64px);padding-bottom:clamp(56px,6vw,90px)">{cards}
+    <div class="rel-grid" style="margin-top:0">{cards}
     </div>
   </div>
 </section>
