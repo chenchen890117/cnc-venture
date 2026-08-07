@@ -101,6 +101,20 @@ function imgUrl(rel) {
   return `/img/${rel}${v ? `?v=${v}` : ''}`;
 }
 
+/* The stylesheet and the script need this as much as the photographs do.
+   They keep their filenames forever and are served with a long max-age, so a
+   browser holding yesterday's style.css renders today's markup with
+   yesterday's rules — new HTML, old CSS, and a page that looks like an
+   unstyled document. Hashing the URL is what makes a redesign arrive. */
+function assetUrl(rel) {
+  const file = path.join(ROOT, rel.replace(/^\//, ''));
+  if (!fs.existsSync(file)) return rel;
+  const v = crypto.createHash('md5').update(fs.readFileSync(file)).digest('hex').slice(0, 8);
+  return `${rel}?v=${v}`;
+}
+const CSS_URL = assetUrl('/css/style.css');
+const JS_URL = assetUrl('/js/main.js');
+
 /* ─────────────────────────────────────────────────────────────────────────
    Markdown
    A deliberately small dialect. Everything an author needs, nothing that
@@ -243,11 +257,13 @@ function parseBlocks(body) {
 const SIZES = new Set(['standard', 'wide', 'feature', 'portrait', 'duo', 'full']);
 
 function figure(b, resolve) {
-  const size = SIZES.has(b.size) ? b.size : 'standard';
+  let size = SIZES.has(b.size) ? b.size : 'standard';
+  if (size === 'feature' || size === 'full') size = 'wide';   // one widest step
   const cap = [];
   if (b.caption) cap.push(inlineMd(b.caption));
   if (b.credit) cap.push(`<span class="credit">${inlineMd(b.credit)}</span>`);
-  const caption = cap.length ? `<figcaption>${cap.join('')}</figcaption>` : '';
+  const caption = cap.length ? `<figcaption class="article-caption">${cap.join('')}</figcaption>` : '';
+  const cls = `article-image article-image-${size}`;
 
   if (size === 'duo') {
     const [a, c] = b.files;
@@ -256,11 +272,11 @@ function figure(b, resolve) {
       .map(([f, alt]) =>
         `<img src="${attr(imgUrl(resolve(f)))}" alt="${attr(alt)}" loading="lazy" decoding="async">`)
       .join('');
-    return `<figure class="docfig img-duo"><div class="pair">${imgs}</div>${caption}</figure>`;
+    return `<figure class="${cls}"><div class="pair">${imgs}</div>${caption}</figure>`;
   }
   const f = b.files[0];
   if (!f) return '';
-  return `<figure class="docfig img-${size}">` +
+  return `<figure class="${cls}">` +
     `<img src="${attr(imgUrl(resolve(f)))}" alt="${attr(b.alt)}" loading="lazy" decoding="async">` +
     `${caption}</figure>`;
 }
@@ -278,7 +294,7 @@ function renderBlocks(blocks, resolve) {
       case 'ol': out.push(`<ol>${b.items.map((i) => `<li>${inlineMd(i)}</li>`).join('')}</ol>`); break;
       case 'quote': {
         const who = b.who ? `<div class="who">${inlineMd(b.who)}</div>` : '';
-        out.push(`<blockquote class="pull-quote"><p class="serif">${inlineMd(b.text)}</p>${who}</blockquote>`);
+        out.push(`<blockquote class="article-pullquote"><p class="serif">${inlineMd(b.text)}</p>${who}</blockquote>`);
         break;
       }
       case 'callout': {
@@ -289,11 +305,11 @@ function renderBlocks(blocks, resolve) {
         if (b.items.length) body.push(`<ul>${b.items.map((i) => `<li>${inlineMd(i)}</li>`).join('')}</ul>`);
         if (b.text) body.push(`<p>${inlineMd(b.text)}</p>`);
         if (b.note) body.push(`<div class="cnote">${inlineMd(b.note)}</div>`);
-        out.push(`<aside class="callout"><div>${head.join('')}</div><div>${body.join('')}</div></aside>`);
+        out.push(`<aside class="article-callout"><div>${head.join('')}</div><div>${body.join('')}</div></aside>`);
         break;
       }
-      case 'advisory': out.push(`<aside class="advisory">${inlineMd(b.text)}</aside>`); break;
-      case 'sidenote': out.push(`<aside class="sidenote">${inlineMd(b.text)}</aside>`); break;
+      case 'advisory': out.push(`<aside class="article-advisory">${inlineMd(b.text)}</aside>`); break;
+      case 'sidenote': out.push(`<aside class="article-aside">${inlineMd(b.text)}</aside>`); break;
       case 'image': out.push(figure(b, resolve)); break;
       default: throw new Error(`unrenderable block ${b.t}`);
     }
@@ -423,7 +439,7 @@ ${alts}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="${o.lang === 'zh-tw' ? FONTS_ZH : FONTS_EN}" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">${ld}
+<link rel="stylesheet" href="${CSS_URL}">${ld}
 </head>
 <body>
 `;
@@ -507,7 +523,7 @@ function footer(lang) {
   </div>
 </footer>
 
-<script src="/js/main.js" defer></script>
+<script src="${JS_URL}" defer></script>
 </body>
 </html>
 `;
@@ -531,8 +547,8 @@ function card(p, lang) {
 function closingCta(lang) {
   const ui = UI[lang];
   return `
-<section class="doc-cta">
-  <div class="wrap">
+<section class="article-cta">
+  <div class="panel">
     <div class="label reveal">${esc(ui.ctaLabel)}</div>
     <h2 class="serif reveal" style="--d:80ms">${esc(ui.docCtaHead)}</h2>
     <p class="reveal" style="--d:160ms">${esc(ui.docCtaBody)}</p>
@@ -573,23 +589,43 @@ function renderPiece(p, lang, siblings, byslug) {
     `<a href="${crumbRootHref}">${esc(crumbRoot)}</a><span class="sep" aria-hidden="true">/</span>` +
     `<span aria-current="page">${esc(r.crumb || r.title)}</span></nav>`;
 
-  const statusPill = isProject && r.statusShort
-    ? `<span class="status"><span class="dot" aria-hidden="true"></span>${esc(r.statusShort)}</span>` : '';
+  /* Every fact is stated exactly once on the page. A project carries its
+     status, sector, market and phase in the overview panel, so the kicker
+     names only the category and the metadata rule is dropped entirely. An
+     article has no panel, so its rule carries reading time and date. */
+  const kicker = isProject
+    ? `<span class="cat">${esc(cat ? cat[lang] : '')}</span>`
+    : `<span class="cat">${esc(cat ? cat[lang] : '')}</span>` +
+      (r.readingTime
+        ? `<span class="sep" aria-hidden="true"></span><span class="rt">${esc(r.readingTime)}</span>`
+        : '');
 
-  const metaRow = isProject
-    ? `<span>${esc(ui.industryLabel)}: ${esc(r.industry || '')}</span>` +
-      `<span>${esc(ui.updatedLabel)}: ${esc(r.dateLabel || '')}</span>`
-    : `<span>${esc(ui.catLabel)}: ${esc(cat ? cat[lang] : '')}</span>` +
-      (r.readingTime ? `<span>${esc(r.readingTime)}</span>` : '') +
-      `<span>${esc(ui.updatedLabel)}: ${esc(r.dateLabel || '')}</span>`;
+  /* Display type has to answer to the words in it. A 60-character headline set
+     at 82px is five ragged lines; the same headline at 64px is four deliberate
+     ones. The threshold is a property of the template, not of any one article,
+     so a long title typeset next year gets the same treatment. */
+  const titleLen = lang === 'zh-tw'
+    ? (r.title.match(/[\u3000-\u9fff\uf900-\ufaff]/g) || []).length || r.title.length
+    : r.title.length;
+  const titleClass = titleLen > (lang === 'zh-tw' ? 16 : 44) ? ' is-long' : '';
 
-  // The project panel appears exactly once, and only on projects.
+  const metaRow = isProject ? '' :
+    `<div class="article-meta reveal" style="--d:200ms">` +
+    `<span>${esc(ui.updatedLabel)} · ${esc(r.dateLabel || '')}</span></div>`;
+
+  // Project overview: one designed information panel, immediately after the
+  // hero. The date joins it here rather than repeating in a metadata rule.
   let overview = '';
   if (isProject && r.facts.length) {
-    const rows = r.facts.map(([k, v], n) =>
-      `<div class="row${n === 0 ? ' live' : ''}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
-    overview = `<section class="overview reveal" aria-label="${attr(ui.infoLabel)}">` +
-      `<div class="lbl">${esc(ui.infoLabel)}</div><dl>${rows}</dl></section>`;
+    const facts = [...r.facts];
+    if (r.dateLabel && !facts.some(([k]) => k === ui.updatedLabel)) {
+      facts.push([ui.updatedLabel, r.dateLabel]);
+    }
+    const rows = facts.map(([k, v], n) =>
+      `<div${n === 0 ? ' class="live"' : ''}><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+    overview =
+      `<section class="project-overview reveal" aria-label="${attr(ui.infoLabel)}">` +
+      `<div class="po-label">${esc(ui.infoLabel)}</div><dl>${rows}</dl></section>`;
   }
 
   // Previous / next runs inside the same section, in listing order.
@@ -607,9 +643,9 @@ function renderPiece(p, lang, siblings, byslug) {
   };
   const prev = siblings[idx - 1];
   const next = siblings[idx + 1];
-  const prevnext = (prev || next) ? `
-<nav class="prevnext" aria-label="${attr(ui.pagerLabel)}">
-  <div class="wrap"><div class="row">${pn('prev', prev)}${pn('next', next)}</div></div>
+  const pager = (prev || next) ? `
+<nav class="article-pager" aria-label="${attr(ui.pagerLabel)}">
+  <div class="row">${pn('prev', prev)}${pn('next', next)}</div>
 </nav>
 ` : '';
 
@@ -621,14 +657,12 @@ function renderPiece(p, lang, siblings, byslug) {
     x.slug !== p.slug && !picked.some((y) => y.slug === x.slug));
   const related = [...picked, ...fallback].slice(0, 3);
   const relatedBlock = related.length ? `
-<section class="related">
-  <div class="wrap">
-    <div class="hd reveal">
-      <h2 class="serif">${esc(ui.related)}</h2>
-      <span class="note">${esc(ui.relatedNote)}</span>
-    </div>
-    <div class="rel-grid${related.length === 3 ? ' three' : ''}">${related.map((x) => card(x, lang)).join('')}
-    </div>
+<section class="article-related">
+  <div class="hd reveal">
+    <h2>${esc(ui.related)}</h2>
+    <span class="note">${esc(ui.relatedNote)}</span>
+  </div>
+  <div class="rel-grid">${related.map((x) => card(x, lang)).join('')}
   </div>
 </section>
 ` : '';
@@ -651,38 +685,39 @@ function renderPiece(p, lang, siblings, byslug) {
     hero: p.meta.hero, heroAlt: r.heroAlt, ogType: 'article', ld,
   }) + nav(lang, pagePath, alts) + `
 <main id="main">
-<article class="doc on-light">
+<div class="article-shell on-light">
+<article data-kind="${isProject ? 'project' : 'article'}">
 
-  <div class="wide doc-opening reveal">
-    <figure>
-      <img src="${attr(imgUrl(p.meta.hero))}" alt="${attr(r.heroAlt)}" fetchpriority="high" decoding="async">
-      ${r.heroCaption ? `<figcaption>${inlineMd(r.heroCaption)}</figcaption>` : ''}
-    </figure>
-  </div>
+  <header class="article-header">
+    <div class="article-header-inner">
+      ${crumbs}
+      <div class="article-kicker reveal">${kicker}</div>
+      <h1 class="article-title serif reveal${titleClass}" style="--d:60ms">${esc(r.title)}</h1>
+      ${r.standfirst ? `<p class="article-deck reveal" style="--d:130ms">${inlineMd(r.standfirst)}</p>` : ''}
+      ${metaRow}
+    </div>
+  </header>
 
-  ${crumbs}
-
-  <div class="doc-eyebrow reveal">
-    <span class="cat">${esc(cat ? cat[lang] : '')}</span>
-    ${statusPill}
-  </div>
-
-  <h1 class="serif reveal" style="--d:60ms">${esc(r.title)}</h1>
-  ${r.standfirst ? `<p class="doc-standfirst reveal" style="--d:130ms">${inlineMd(r.standfirst)}</p>` : ''}
-  <div class="doc-meta reveal" style="--d:200ms">${metaRow}</div>
+  <figure class="article-hero reveal">
+    <img src="${attr(imgUrl(p.meta.hero))}" alt="${attr(r.heroAlt)}" fetchpriority="high" decoding="async">
+    ${r.heroCaption ? `<figcaption class="article-caption">${inlineMd(r.heroCaption)}</figcaption>` : ''}
+  </figure>
 
   ${overview}
 
-  <div class="prose">
-    ${renderBlocks(r.blocks, p.resolve)}
+  <div class="article-layout">
+    <div class="article-body">
+      ${renderBlocks(r.blocks, p.resolve)}
+    </div>
   </div>
 
-  <div class="doc-end">
+  <div class="article-end">
     <a class="backlink" href="${crumbRootHref}"><span class="arw" aria-hidden="true">←</span> ${esc(isProject ? ui.backProjects : ui.back)}</a>
   </div>
 
 </article>
-${prevnext}${relatedBlock}${closingCta(lang)}</main>
+${pager}${relatedBlock}${closingCta(lang)}</div>
+</main>
 ${footer(lang)}`;
 
   const bytes = write(path.join(ROOT, s, p.folder, p.slug, 'index.html'), doc);
@@ -704,27 +739,27 @@ function renderListing(o) {
     `<span aria-current="page">${esc(crumb)}</span></nav>`;
 
   const grid = pieces.length
-    ? `<section class="related" style="background:var(--warm-white)">
-  <div class="wrap">
-    <div class="rel-grid three" style="margin-top:0">${pieces.map((p) => card(p, lang)).join('')}
-    </div>
+    ? `<div class="listing-grid">
+  <div class="rel-grid">${pieces.map((p) => card(p, lang)).join('')}
   </div>
-</section>`
-    : `<section class="listing empty on-light"><div class="wrap"><p class="doc-standfirst">${esc(empty || ui.emptyCategory)}</p></div></section>`;
+</div>`
+    : `<section class="listing empty"><div class="article-header-inner"><p class="article-deck">${esc(empty || ui.emptyCategory)}</p></div></section>`;
 
   const doc = head({ lang, path: pagePath, alts, title, desc, hero, heroAlt, noindex }) +
     nav(lang, pagePath, alts) + `
 <main id="main">
-<section class="listing on-light">
-  <div class="wrap">
+<div class="article-shell on-light">
+<section class="listing">
+  <div class="article-header-inner">
     ${crumbs}
     <h1 class="serif reveal">${esc(title)}</h1>
-    <p class="doc-standfirst reveal" style="--d:120ms">${esc(stand)}</p>
-    ${showCatNav ? catNav(lang, current) : ''}
+    <p class="article-deck reveal" style="--d:120ms">${esc(stand)}</p>
   </div>
+  ${showCatNav ? catNav(lang, current) : ''}
 </section>
 ${grid}
-${closingCta(lang)}</main>
+${closingCta(lang)}</div>
+</main>
 ${footer(lang)}`;
 
   const bytes = write(path.join(ROOT, s, pagePath, 'index.html'), doc);
@@ -806,9 +841,9 @@ function main() {
     const ui = UI[lang];
 
     for (const p of live) {
-      const siblings = live.filter((x) =>
-        x.meta.type === p.meta.type &&
-        (p.meta.type === 'project' || x.meta.category === p.meta.category));
+      // Previous / next runs across the whole section, not just one category:
+      // otherwise the first piece filed under a new category is a dead end.
+      const siblings = live.filter((x) => x.meta.type === p.meta.type);
       bytes += renderPiece(p, lang, siblings, byslug);
       pages++;
       console.log(`  /${s}/${p.folder}/${p.slug}/`);

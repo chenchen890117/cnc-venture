@@ -40,8 +40,16 @@ def build_map(img_dir):
     return vmap
 
 
-def version(doc, vmap):
-    """Append ?v=<hash> to every /img/... reference in a document."""
+def version(doc, vmap, root=None):
+    """Append ?v=<hash> to every versioned asset reference in a document.
+
+    The stylesheet and the script matter as much as the photographs. Both are
+    served with a long max-age and both keep their filenames forever, so a
+    browser holding yesterday's style.css will render today's markup with
+    yesterday's rules — new HTML, old CSS, and a page that looks like an
+    unstyled document. Hashing the URL is what makes a redesign actually
+    arrive.
+    """
     def sub(m):
         prefix, name = m.group(1), m.group(2)
         h = vmap.get(name)
@@ -49,4 +57,10 @@ def version(doc, vmap):
     # src="/img/x.jpg" and content="https://domain/img/x.jpg" (Open Graph)
     doc = re.sub(r'(src=")/img/([^"?]+)', lambda m: sub(m), doc)
     doc = re.sub(r'(content="https://[^"]*?)/img/([^"?]+)', lambda m: sub(m), doc)
+
+    root = root or os.path.dirname(IMG_DIR)
+    for path in ('/css/style.css', '/js/main.js'):
+        f = os.path.join(root, path.lstrip('/'))
+        if os.path.isfile(f):
+            doc = doc.replace(f'"{path}"', f'"{path}?v={_hash(f)}"')
     return doc
