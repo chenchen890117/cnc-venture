@@ -41,6 +41,21 @@ UI = {
         tagline='Expand Beyond Borders.',
         copyright='© 2026 CnC Venture. A business expansion platform.',
         route='Taiwan → United States',
+        # ── listing pages and article navigation ──────────────────────
+        allLabel='All',
+        prevLabel='Previous', nextLabel='Next', pagerLabel='Article navigation',
+        emptyCategory='Nothing has been published in this section yet. '
+                      'New pieces appear here as they are written.',
+        journalDesc='A business magazine on building in America — market reports, city '
+                    'guides, expansion stories and the considerations behind each decision.',
+        journalStand='Market overviews, city guides and practical playbooks for companies '
+                     'building a presence in the United States.',
+        journalHeroAlt='Red rock country near Sedona, Arizona',
+        projectsDesc='Live engagements, reported as they stand. These are ongoing '
+                     'projects, not finished case studies.',
+        projectsStand='Live engagements, reported as they stand. We will publish outcomes '
+                      'when there are outcomes to publish.',
+        projectsHeroAlt='Office towers in downtown Phoenix',
         nav=[('About', '/{s}/about/'), ('Services', '/{s}/services/'),
              ('Industries', '/{s}/#industries'), ('Expansion Stories', '/{s}/#stories'),
              ('Insights', '/{s}/#insights'), ('Arizona', '/{s}/#arizona'),
@@ -79,6 +94,17 @@ UI = {
         tagline='讓世界，看見你的下一步。',
         copyright='© 2026 CnC Venture. 企業海外拓展平台。',
         route='台灣 → 美國',
+        # ── 列表頁與文章導覽 ──────────────────────────────────────────
+        allLabel='全部',
+        prevLabel='上一篇', nextLabel='下一篇', pagerLabel='文章導覽',
+        emptyCategory='這個分類還沒有文章。新的內容寫好之後，會出現在這裡。',
+        journalDesc='一本關於「在美國落地」的商業誌——市場觀察、城市指南、創業案例，'
+                    '以及每個決定背後的真實考量。',
+        journalStand='給正在美國建立據點的企業：市場觀察、城市指南與實務指引。',
+        journalHeroAlt='亞利桑那州 Sedona 一帶的紅岩地景',
+        projectsDesc='進行中的合作，如實呈現。這些是正在進行的專案，不是完成的案例。',
+        projectsStand='進行中的合作，如實呈現。有成果的時候，我們再談成果。',
+        projectsHeroAlt='Phoenix 市中心的辦公大樓',
         nav=[('關於', '/{s}/about/'), ('服務', '/{s}/services/'),
              ('產業', '/{s}/#industries'), ('專案', '/{s}/#stories'),
              ('觀點', '/{s}/#insights'), ('亞利桑那', '/{s}/#arizona'),

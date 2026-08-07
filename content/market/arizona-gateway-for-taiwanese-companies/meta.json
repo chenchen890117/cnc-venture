@@ -1,0 +1,12 @@
+{
+  "type": "article",
+  "category": "market",
+  "hero": "hero-gateway.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 0,
+  "related": [
+    "phoenix-metro-market-guide",
+    "taiwan-startup-delegation-arizona"
+  ]
+}

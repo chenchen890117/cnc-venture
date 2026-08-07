@@ -317,7 +317,7 @@ ALT_TEXT = {
     'Street scene in central Phoenix': 'Phoenix 市中心街景',
     'Office towers in downtown Phoenix': 'Phoenix 市中心的辦公大樓',
     'Desert park and buttes in the Phoenix metro area': '大鳳凰城地區的沙漠公園與岩丘',
-    'The Phoenix valley at dusk': '黃昏時分的鳳凰城谷地',
+    'Red rock country near Sedona, Arizona': '亞利桑那州 Sedona 一帶的紅岩地景',
     'A Phoenix neighbourhood with desert planting': '種滿沙漠植栽的鳳凰城社區',
     'Resort pools at dusk in Scottsdale': '黃昏時分 Scottsdale 的度假泳池',
     'Visitors beside water in an Arizona desert garden': '亞利桑那沙漠花園中的水岸與訪客',

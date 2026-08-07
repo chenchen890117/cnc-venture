@@ -1,0 +1,12 @@
+{
+  "type": "article",
+  "category": "market",
+  "hero": "hero-restaurant-guide.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 3,
+  "related": [
+    "phoenix-metro-market-guide",
+    "taiwanese-restaurant-group-exploring-phoenix"
+  ]
+}

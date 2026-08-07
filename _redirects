@@ -38,6 +38,8 @@
 # part of the website. Send anything that reaches them to the homepage.
 /src/*            /en/       301
 /tools/*          /en/       301
+/scripts/*        /en/       301
+/content/*        /en/       301
 
 # ── Future ───────────────────────────────────────────────────────────────
 # Add new sections in pairs so the two trees stay symmetrical:

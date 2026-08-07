@@ -513,7 +513,7 @@ html[lang^="zh"] .serif,
 html[lang^="zh"] .mobile-nav li a,
 html[lang^="zh"] .city .role,
 html[lang^="zh"] .foot .tagline{
-  font-family:"Fraunces",var(--cjk-sans),sans-serif;
+  font-family:var(--cjk-sans);
   font-weight:700;
 }
 html[lang^="zh"] .d-xl,
@@ -575,252 +575,341 @@ html[lang^="zh"] .story .route,
 html[lang^="zh"] em,html[lang^="zh"] i:not([class]){font-style:normal}
 
 /* ═══════════════════════════════════════════════════════════════
-   ARTICLE TEMPLATE — Journal features and Expansion projects
-   A reading experience, not a document page. The column is narrow
-   and centred; pull quotes, callouts and images break out of it.
+   ARTICLE TEMPLATE
+   A reading experience, not a document. Four content widths —
+   text, wide, feature, full — so the page changes shape as you
+   scroll. Every width is derived from the reading column, which
+   means widening the margins can never squeeze the text.
    Homepage styles above are untouched.
    ═══════════════════════════════════════════════════════════════ */
 :root{
-  --read:min(800px,100%);          /* 65–75 characters of Latin text */
-  /* The breakout width is derived from the reading column plus a gutter, so
-     widening the outer margin can never squeeze the text column. */
-  --gutter:clamp(0px,7vw,180px);
-  --breakout:calc(var(--read) + 2 * var(--gutter));
-  --doc-rhythm:clamp(64px,8.5vw,120px);
+  --read-max:760px;                  /* 65–75 Latin characters */
+  --read:min(var(--read-max),100%);
+  --doc-side:clamp(20px,4.5vw,90px); /* floor for the outer margin */
+
+  /* Breakout gutters are cut from what is left over AFTER the reading column
+     and its minimum margins are paid for. On a phone the slack is zero, so
+     the gutters are zero and every width collapses to one honest column —
+     the text can never be squeezed to buy a margin it cannot afford. */
+  --slack:max(0px, 100vw - var(--read-max) - 2 * var(--doc-side));
+  --g1:min(110px, var(--slack) * .20);   /* text → wide  */
+  --g2:min(150px, var(--slack) * .28);   /* wide → feature */
+
+  --rhythm:clamp(56px,7vw,104px);
+  --rhythm-lg:clamp(76px,9.5vw,140px);
 }
 
-/* The editorial grid. Everything sits in the text column by default;
-   .wide and .full opt out. This is what creates the rhythm — content
-   that changes width as you scroll rather than one uniform block. */
 .doc{
-  /* Article pages carry far wider outer margins than the homepage. The
-     margin is whatever is left after the breakout width, so widening it
-     can never squeeze the reading column. --doc-side is only the floor
-     for narrow screens. */
-  --doc-side:clamp(24px,6vw,104px);
   display:grid;
   grid-template-columns:
     [full-start] minmax(var(--doc-side),1fr)
-    [wide-start] minmax(0,var(--gutter))
-    [text-start] minmax(0,var(--read)) [text-end]
-    minmax(0,var(--gutter)) [wide-end]
+    [feature-start] minmax(0,var(--g2))
+    [wide-start]    minmax(0,var(--g1))
+    [text-start]    minmax(0,var(--read)) [text-end]
+                    minmax(0,var(--g1)) [wide-end]
+                    minmax(0,var(--g2)) [feature-end]
     minmax(var(--doc-side),1fr) [full-end];
 }
 .doc > *{grid-column:text}
 .doc > .wide{grid-column:wide}
+.doc > .feature{grid-column:feature}
 .doc > .full{grid-column:full}
 
-/* ── Cinematic opening image ─────────────────────────────────── */
-.doc-opening{margin-top:clamp(106px,13vh,152px)}
+/* ── Opening image ───────────────────────────────────────────── */
+.doc-opening{margin-top:clamp(100px,12vh,140px)}
 .doc-opening figure{margin:0}
-.doc-opening img{
-  width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;
-  border-radius:3px;
-  box-shadow:0 34px 70px -44px rgba(2,56,61,.42);
-}
+.doc-opening img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+  border-radius:2px;box-shadow:0 30px 64px -46px rgba(2,56,61,.36)}
 @media(max-width:700px){.doc-opening img{aspect-ratio:4/3}}
-.doc-opening figcaption{margin-top:16px;font-size:12.5px;line-height:1.6;
-  color:var(--stone-deep);letter-spacing:.01em}
 
 /* ── Editorial header ────────────────────────────────────────── */
 .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
-  margin-top:var(--doc-rhythm);font-size:12px;letter-spacing:.05em;color:var(--stone-deep)}
-.crumbs a{transition:color .35s var(--ease)}
+  margin-top:var(--rhythm);font-size:12px;letter-spacing:.05em;color:var(--stone-deep)}
 .crumbs a:hover{color:var(--ink)}
 .crumbs .sep{opacity:.4}
 .crumbs [aria-current]{color:var(--on-light)}
 
 .doc-eyebrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;
-  margin-top:clamp(26px,3vw,40px)}
+  margin-top:clamp(24px,2.8vw,36px)}
 .doc-eyebrow .cat{color:var(--sunset-deep);font-size:11.5px;letter-spacing:.2em;
   text-transform:uppercase;font-weight:500}
-.doc-eyebrow .status{font-size:11.5px}
+.doc-eyebrow .rt{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--stone-deep)}
 
-.doc h1{margin-top:clamp(20px,2.4vw,32px);
-  font-size:clamp(34px,4.8vw,68px);line-height:1.04;letter-spacing:-.032em}
-.doc-standfirst{margin-top:clamp(24px,2.8vw,36px);
-  font-size:clamp(18px,1.5vw,23px);line-height:1.62;font-weight:300;
-  letter-spacing:-.008em;color:var(--on-light-mute);max-width:36em}
-
-.doc-meta{display:flex;flex-wrap:wrap;gap:10px 30px;
-  margin-top:clamp(28px,3.2vw,42px);padding-block:16px;
+/* Controlled headline: strong, never a full screen of type. */
+.doc h1{margin-top:clamp(18px,2.2vw,28px);
+  font-size:clamp(32px,4.4vw,72px);line-height:1.06;letter-spacing:-.03em;
+  max-width:19ch}
+.doc-standfirst{margin-top:clamp(22px,2.6vw,32px);max-width:44ch;
+  font-size:clamp(17px,1.35vw,20.5px);line-height:1.66;font-weight:300;
+  letter-spacing:-.006em;color:var(--on-light-mute)}
+.doc-meta{display:flex;flex-wrap:wrap;gap:8px 28px;
+  margin-top:clamp(26px,3vw,38px);padding-block:15px;
   border-top:1px solid var(--rule-light);border-bottom:1px solid var(--rule-light);
-  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone-deep)}
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone-deep)}
 
-/* ── Project information panel (appears exactly once) ────────── */
-.infocard{margin-top:clamp(40px,4.6vw,64px);
-  border:1px solid var(--rule-light);border-radius:3px;
-  background:var(--warm-white);overflow:hidden}
-.infocard .hd{padding:16px clamp(20px,2.2vw,30px);
-  border-bottom:1px solid var(--rule-light);background:rgba(232,220,200,.32);
-  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone-deep)}
-.infocard dl{margin:0;display:grid;grid-template-columns:1fr;
-  gap:1px;background:var(--rule-light)}
-@media(min-width:600px){.infocard dl{grid-template-columns:1fr 1fr}}
-.infocard .row{padding:clamp(18px,2vw,26px) clamp(20px,2.2vw,30px);
-  background:var(--warm-white)}
-.infocard .row:last-child:nth-child(odd){grid-column:1/-1}
-.infocard dt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone-deep)}
-.infocard dd{margin:9px 0 0;font-size:15.5px;line-height:1.5;color:var(--on-light)}
-.infocard .row.live dd{display:flex;align-items:center;gap:9px;color:var(--sunset-deep);font-weight:500}
-.infocard .row.live dd::before{content:"";width:7px;height:7px;border-radius:50%;
+/* ── Project overview panel — stated once, nowhere else ──────── */
+.overview{margin-top:clamp(36px,4.2vw,58px);border-top:1px solid var(--ink);
+  padding-top:22px}
+.overview .lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--stone-deep)}
+.overview dl{margin:clamp(20px,2.4vw,30px) 0 0;display:grid;
+  grid-template-columns:1fr;gap:0}
+@media(min-width:620px){.overview dl{grid-template-columns:1fr 1fr}}
+@media(min-width:980px){.overview dl{grid-template-columns:repeat(3,1fr)}}
+.overview .row{padding:16px 24px 18px 0;border-bottom:1px solid var(--rule-light)}
+.overview dt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--stone-deep)}
+.overview dd{margin:8px 0 0;font-size:15.5px;line-height:1.5;color:var(--on-light)}
+.overview .row.live dd{display:flex;align-items:center;gap:9px;
+  color:var(--sunset-deep);font-weight:500}
+.overview .row.live dd::before{content:"";width:6px;height:6px;border-radius:50%;
   background:var(--sunset);box-shadow:0 0 0 3px rgba(217,119,63,.2);flex:none}
 
 /* ── Prose ───────────────────────────────────────────────────── */
-.prose{margin-top:var(--doc-rhythm)}
-.prose > p{font-size:clamp(17px,1.2vw,18.5px);line-height:1.85;
-  letter-spacing:-.003em;color:var(--on-light);margin-top:1.5em}
-.prose > p:first-child{margin-top:0}
+.prose{margin-top:var(--rhythm-lg);counter-reset:sec}
+
+/* The breakout widths live on the document grid, but the blocks that use them
+   are nested inside .prose. Subgrid hands .prose the parent's tracks and line
+   names so a pull quote or a wide photograph can still reach past the reading
+   column. Where subgrid is unavailable, .prose stays a plain block inside the
+   text column and every element simply reads at text width — narrower than
+   intended, never broken. */
+@supports (grid-template-columns:subgrid){
+  .prose{grid-column:full;display:grid;grid-template-columns:subgrid;
+    align-content:start}
+  .prose > *{grid-column:text}
+  .prose > .pull-quote,
+  .prose > .callout,
+  .prose > .img-wide,
+  .prose > .img-duo{grid-column:wide}
+  .prose > .img-feature{grid-column:feature}
+  .prose > .img-full{grid-column:full}
+  @media(min-width:1180px){
+    .prose > .sidenote{grid-column:wide-start / text-start}
+  }
+}
+.prose > p{font-size:clamp(17px,1.15vw,18.5px);line-height:1.85;
+  letter-spacing:-.003em;color:var(--on-light);margin-top:1.55em}
 .prose > :first-child{margin-top:0}
-
-/* Section headings carry a small numeral, set by the document itself. */
-.prose{counter-reset:sec}
-.prose > h2{counter-increment:sec;
-  margin-top:var(--doc-rhythm);
-  font-size:clamp(26px,2.6vw,40px);line-height:1.14;letter-spacing:-.028em}
+.prose > h2{counter-increment:sec;margin-top:var(--rhythm-lg);
+  font-size:clamp(25px,2.4vw,36px);line-height:1.16;letter-spacing:-.026em}
 .prose > h2::before{content:counter(sec,decimal-leading-zero);
-  display:block;margin-bottom:clamp(14px,1.6vw,22px);
-  font-family:"Inter",sans-serif;font-size:11.5px;font-weight:500;
-  letter-spacing:.22em;color:var(--sunset-deep)}
-.prose > h2 + p{margin-top:clamp(20px,2.2vw,28px)}
-.prose > h3{margin-top:clamp(40px,4vw,58px);
-  font-size:clamp(19px,1.5vw,24px);line-height:1.26;letter-spacing:-.018em}
+  display:block;margin-bottom:clamp(12px,1.5vw,20px);
+  font-family:"Inter",sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:.24em;color:var(--sunset-deep)}
+.prose > h2 + p{margin-top:clamp(18px,2vw,26px)}
+.prose > h3{margin-top:clamp(38px,3.8vw,54px);
+  font-size:clamp(18.5px,1.45vw,23px);line-height:1.28;letter-spacing:-.018em}
 .prose > h3 + p{margin-top:.9em}
-
-.prose ul,.prose ol{margin-top:1.5em;padding-left:1.15em}
-.prose li{font-size:clamp(16.5px,1.15vw,17.5px);line-height:1.78;margin-top:.75em;
+.prose ul,.prose ol{margin-top:1.5em;padding-left:1.1em}
+.prose li{font-size:clamp(16.5px,1.1vw,17.5px);line-height:1.8;margin-top:.7em;
   color:var(--on-light)}
 .prose li::marker{color:var(--sunset)}
 .prose strong{font-weight:500}
+.prose hr{grid-column:text;margin-block:var(--rhythm);border:0;
+  border-top:1px solid var(--rule-light)}
 .prose a:not(.btn){border-bottom:1px solid var(--stone);transition:border-color .35s var(--ease)}
 .prose a:not(.btn):hover{border-color:var(--ink)}
 
-/* ── Pull quote — breaks out, soft beige, the loudest moment ── */
-.pull{grid-column:wide;margin:0;
-  margin-block:var(--doc-rhythm);
-  background:var(--beige);border-radius:3px;
-  padding:clamp(38px,5vw,76px) clamp(28px,5vw,80px)}
-.pull p{font-size:clamp(23px,2.6vw,40px);line-height:1.24;letter-spacing:-.028em;
-  color:var(--ink);max-width:20ch}
-.pull .who{margin-top:clamp(20px,2.2vw,28px);font-size:11px;letter-spacing:.2em;
+/* ── Pull quote — no box, a rule and a lot of air ────────────── */
+.pull-quote{margin:var(--rhythm-lg) 0;
+  padding-top:clamp(26px,3vw,38px);border-top:1px solid var(--sunset)}
+.pull-quote p{font-size:clamp(22px,2.5vw,38px);line-height:1.28;letter-spacing:-.028em;
+  color:var(--ink);max-width:21ch}
+.pull-quote .who{margin-top:clamp(18px,2vw,26px);font-size:11px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--stone-deep)}
 
-/* ── Callouts — magazine side notes, not cards ───────────────── */
-.callout{grid-column:wide;margin-block:var(--doc-rhythm);
-  display:grid;gap:clamp(22px,3vw,52px);
-  padding-top:clamp(26px,3vw,38px);border-top:2px solid var(--ink)}
-@media(min-width:860px){.callout{grid-template-columns:minmax(160px,26%) minmax(0,1fr)}}
-.callout .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+/* ── Editorial callouts — notes in the margin, not SaaS cards ── */
+.callout{margin-block:var(--rhythm-lg);
+  background:var(--beige);border-radius:2px;
+  padding:clamp(28px,3.4vw,48px) clamp(24px,3vw,44px);
+  display:grid;gap:clamp(20px,2.6vw,44px)}
+@media(min-width:880px){.callout{grid-template-columns:minmax(150px,24%) minmax(0,1fr)}}
+.callout .lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--sunset-deep);font-weight:500}
-.callout h3{margin-top:12px;font-size:clamp(19px,1.5vw,25px);line-height:1.24;
+.callout h3{margin-top:11px;font-size:clamp(18px,1.4vw,23px);line-height:1.26;
   letter-spacing:-.02em}
 .callout ul{list-style:none;margin:0;padding:0}
-.callout li{position:relative;padding-left:30px;margin-top:1.05em;
-  font-size:clamp(15.5px,1.05vw,16.5px);line-height:1.72;color:var(--on-light)}
+.callout li{position:relative;padding-left:28px;margin-top:1em;
+  font-size:clamp(15.5px,1.05vw,16.5px);line-height:1.75;color:var(--on-light)}
 .callout li:first-child{margin-top:0}
-.callout li::before{content:"";position:absolute;left:0;top:.62em;width:14px;height:1px;
+.callout li::before{content:"";position:absolute;left:0;top:.68em;width:13px;height:1px;
   background:var(--sunset)}
-.callout .cnote{margin-top:1.6em;padding-top:1.2em;border-top:1px solid var(--rule-light);
+.callout p{font-size:clamp(15.5px,1.05vw,16.5px);line-height:1.78;color:var(--on-light)}
+.callout p + p{margin-top:1em}
+.callout .cnote{margin-top:1.5em;padding-top:1.2em;border-top:1px solid rgba(18,49,47,.13);
   font-size:13.5px;line-height:1.72;color:var(--on-light-mute)}
 
-/* ── Advisory note ───────────────────────────────────────────── */
-.advisory{margin-block:clamp(40px,4.4vw,64px);padding:22px 26px;
-  border-left:2px solid var(--sunset);background:rgba(217,119,63,.06);
-  border-radius:0 3px 3px 0;font-size:14.5px;line-height:1.78;color:var(--on-light-mute)}
+/* ── Advisory ────────────────────────────────────────────────── */
+.advisory{margin-block:clamp(38px,4vw,56px);padding:20px 24px;
+  border-left:2px solid var(--sunset);background:rgba(217,119,63,.055);
+  border-radius:0 2px 2px 0;font-size:14.5px;line-height:1.78;color:var(--on-light-mute)}
 
-/* ── In-article image — breaks out, never dropped in at random ─ */
-.docfig{grid-column:wide;margin:0;margin-block:var(--doc-rhythm)}
-.docfig img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:3px;
-  box-shadow:0 26px 56px -40px rgba(2,56,61,.36)}
-.docfig figcaption{margin-top:16px;padding-left:2px;font-size:12.5px;line-height:1.6;
-  color:var(--stone-deep);max-width:46em}
+/* ── Marginalia — a small note beside the column, not inside it ─ */
+.sidenote{margin-block:clamp(26px,3vw,38px);
+  padding-left:16px;border-left:1px solid var(--stone);
+  font-size:13.5px;line-height:1.72;color:var(--on-light-mute)}
+@media(min-width:1180px){
+  .sidenote{margin-block:0;
+    padding:0 26px 0 0;border-left:0;text-align:right;
+    align-self:start;position:relative;top:.4em}
+}
 
-/* ── Foot of the article ─────────────────────────────────────── */
-.doc-end{margin-top:var(--doc-rhythm);padding-block:clamp(30px,3.4vw,44px) 0;
+/* ── Image system ────────────────────────────────────────────── */
+figure.docfig{margin:var(--rhythm) 0}
+figure.docfig img{width:100%;height:auto;border-radius:2px;display:block}
+figure.docfig figcaption{margin-top:14px;font-size:12.5px;line-height:1.62;
+  color:var(--stone-deep);max-width:48em}
+figure.docfig figcaption .credit{display:block;margin-top:3px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+
+figure.img-standard{grid-column:text}
+figure.img-wide{grid-column:wide}
+figure.img-feature{grid-column:feature;margin-block:var(--rhythm-lg)}
+figure.img-feature img{box-shadow:0 30px 64px -48px rgba(2,56,61,.34)}
+figure.img-portrait{grid-column:text;max-width:520px}
+figure.img-portrait img{aspect-ratio:4/5;object-fit:cover}
+
+figure.img-duo{grid-column:wide;margin-block:var(--rhythm-lg)}
+figure.img-duo .pair{display:grid;gap:clamp(14px,1.6vw,24px)}
+@media(min-width:640px){figure.img-duo .pair{grid-template-columns:1fr 1fr}}
+figure.img-duo img{aspect-ratio:4/5;object-fit:cover}
+
+/* ── Article foot ────────────────────────────────────────────── */
+.doc-end{margin-top:var(--rhythm-lg);padding-top:clamp(26px,3vw,38px);
   border-top:1px solid var(--rule-light)}
 .backlink{display:inline-flex;align-items:center;gap:11px;font-size:14px;font-weight:500}
 .backlink .arw{transition:transform .5s var(--ease)}
 .backlink:hover .arw{transform:translateX(-5px)}
 
-/* ── Related — large magazine cards ──────────────────────────── */
-.related{padding-block:var(--doc-rhythm);background:var(--beige)}
+/* ── Previous / next ─────────────────────────────────────────── */
+.prevnext{background:var(--warm-white);padding-block:var(--rhythm);
+  border-top:1px solid var(--rule-light)}
+.prevnext .row{display:grid;gap:clamp(24px,3vw,44px)}
+@media(min-width:760px){.prevnext .row{grid-template-columns:1fr 1fr}}
+.pn{display:block;padding-top:20px;border-top:1px solid var(--rule-light)}
+.pn .dir{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--stone-deep)}
+.pn h3{margin-top:12px;font-size:clamp(17px,1.3vw,21px);line-height:1.32;
+  letter-spacing:-.02em;transition:color .35s var(--ease)}
+.pn:hover h3{color:var(--sunset-deep)}
+.pn.next{text-align:right}
+.pn.next .dir .arw{margin-left:6px}
+.pn.prev .dir .arw{margin-right:6px}
+
+/* ── Related reading ─────────────────────────────────────────── */
+.related{padding-block:var(--rhythm-lg);background:var(--beige)}
 .related .hd{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
-  gap:18px;padding-bottom:clamp(24px,2.6vw,36px);border-bottom:1px solid rgba(18,49,47,.13)}
-.related .hd h2{font-size:clamp(22px,2vw,30px);letter-spacing:-.022em}
-.related .hd .note{font-size:12.5px;color:var(--stone-deep);letter-spacing:.02em}
-.rel-grid{display:grid;gap:clamp(34px,4vw,60px);margin-top:clamp(34px,4vw,56px)}
-@media(min-width:820px){.rel-grid{grid-template-columns:repeat(2,1fr)}}
+  gap:16px;padding-bottom:clamp(22px,2.4vw,32px);border-bottom:1px solid rgba(18,49,47,.13)}
+.related .hd h2{font-size:clamp(20px,1.75vw,27px);letter-spacing:-.022em}
+.related .hd .note{font-size:12.5px;color:var(--stone-deep)}
+.rel-grid{display:grid;gap:clamp(28px,3.2vw,48px);margin-top:clamp(30px,3.4vw,46px)}
+@media(min-width:760px){.rel-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1180px){.rel-grid.three{grid-template-columns:repeat(3,1fr)}}
 .rel{display:block}
-.rel .frame{overflow:hidden;border-radius:3px;background:var(--sand)}
+.rel .frame{overflow:hidden;border-radius:2px;background:var(--sand)}
 .rel img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform 1.6s var(--ease)}
 .rel:hover img{transform:scale(1.05)}
-.rel .kicker{display:flex;align-items:center;gap:12px;margin-top:22px}
-.rel .kicker .cat{color:var(--sunset-deep);font-size:11px;letter-spacing:.2em;
+.rel .kicker{display:flex;align-items:center;gap:11px;margin-top:18px}
+.rel .kicker .cat{color:var(--sunset-deep);font-size:10.5px;letter-spacing:.2em;
   text-transform:uppercase;font-weight:500}
-.rel .kicker .sep{width:13px;height:1px;background:currentColor;opacity:.4}
-.rel .kicker .m{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone-deep)}
-.rel h3{margin-top:14px;font-size:clamp(20px,1.7vw,27px);line-height:1.26;letter-spacing:-.022em}
-.rel p{margin-top:12px;font-size:14.5px;line-height:1.68;color:var(--on-light-mute);max-width:34em}
+.rel .kicker .sep{width:12px;height:1px;background:currentColor;opacity:.4}
+.rel .kicker .m{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--stone-deep)}
+.rel h3{margin-top:12px;font-size:clamp(18px,1.5vw,24px);line-height:1.28;
+  letter-spacing:-.022em}
+.rel p{margin-top:10px;font-size:14px;line-height:1.66;color:var(--on-light-mute);
+  max-width:34em}
+
+/* ── Journal & category listings ─────────────────────────────── */
+/* A listing is a grid of covers, not a document, so its masthead is set
+   against the same container as the cards rather than the reading column. */
+.listing{padding-top:clamp(100px,13vh,150px);padding-bottom:clamp(10px,1.5vw,22px)}
+.listing .crumbs{margin-top:0}
+.listing h1{margin-top:clamp(20px,2.4vw,30px);
+  font-size:clamp(32px,4.4vw,72px);line-height:1.06;letter-spacing:-.03em;max-width:16ch}
+.listing .doc-standfirst{margin-top:clamp(20px,2.4vw,30px)}
+.listing.empty{padding-bottom:clamp(60px,8vw,110px)}
+.cat-nav{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:clamp(28px,3vw,40px);
+  padding-bottom:18px;border-bottom:1px solid var(--rule-light)}
+.cat-nav a{font-size:13.5px;letter-spacing:.02em;color:var(--on-light-mute);
+  padding-bottom:4px;position:relative;transition:color .35s var(--ease)}
+.cat-nav a::after{content:"";position:absolute;left:0;bottom:-19px;height:1px;width:100%;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform .5s var(--ease)}
+.cat-nav a:hover{color:var(--ink)}
+.cat-nav a[aria-current]{color:var(--ink);font-weight:500}
+.cat-nav a[aria-current]::after,.cat-nav a:hover::after{transform:scaleX(1)}
 
 /* ── Full-width editorial CTA ────────────────────────────────── */
 .doc-cta{background:var(--ink);color:var(--on-dark);
-  padding-block:clamp(88px,11vw,168px);text-align:center}
+  padding-block:clamp(80px,10vw,150px);text-align:center}
 .doc-cta .label{color:rgba(245,241,232,.55)}
-.doc-cta h2{margin:clamp(26px,3vw,40px) auto 0;max-width:16ch;color:var(--warm-white);
-  font-size:clamp(30px,3.9vw,60px);line-height:1.1;letter-spacing:-.03em}
-.doc-cta p{margin:clamp(22px,2.4vw,32px) auto 0;max-width:48ch;font-size:clamp(16px,1.2vw,19px);
-  line-height:1.72;font-weight:300;color:rgba(245,241,232,.8)}
-.doc-cta .btn{margin-top:clamp(34px,3.8vw,52px)}
+.doc-cta h2{margin:clamp(24px,2.8vw,36px) auto 0;max-width:16ch;color:var(--warm-white);
+  font-size:clamp(28px,3.5vw,54px);line-height:1.12;letter-spacing:-.028em}
+.doc-cta p{margin:clamp(20px,2.2vw,30px) auto 0;max-width:48ch;
+  font-size:clamp(16px,1.15vw,18.5px);line-height:1.72;font-weight:300;
+  color:rgba(245,241,232,.8)}
+.doc-cta .btn{margin-top:clamp(32px,3.6vw,48px)}
 
-/* Detail pages sit on warm white — the nav is solid from the first pixel. */
 .nav.always-solid{background:rgba(2,56,61,.94);
   -webkit-backdrop-filter:saturate(160%) blur(18px);
   backdrop-filter:saturate(160%) blur(18px);
   box-shadow:0 1px 0 rgba(245,241,232,.12)}
 
-/* ═══ Traditional Chinese — article pages ═══════════════════════
-   Fraunces has no CJK coverage, so a Chinese heading set in it is
-   a synthesised fallback: thin, wide, and weak. Chinese headings
-   are set in Noto Sans TC Black instead. Latin words inside them
-   still resolve to Fraunces, which has no CJK glyphs to claim. */
-html[lang^="zh"]{--read:min(680px,100%)}          /* ~34 Chinese characters */
-html[lang^="zh"] .doc h1{
+/* ═══ Traditional Chinese — global heading system ═══════════════
+   Fraunces has no CJK coverage. Any Chinese character set in it is
+   a synthesised fallback: thin, wide and weak. Every Chinese
+   heading on the site is set in Noto Sans TC instead. */
+html[lang^="zh"] h1,
+html[lang^="zh"] h2,
+html[lang^="zh"] h3,
+html[lang^="zh"] h4,
+html[lang^="zh"] .serif,
+html[lang^="zh"] .pull-quote p,
+html[lang^="zh"] .article-title,
+html[lang^="zh"] .mobile-nav li a,
+html[lang^="zh"] .city .role,
+html[lang^="zh"] .foot .tagline{
   font-family:var(--cjk-sans);
-  font-weight:900;letter-spacing:-.038em;line-height:1.1;
-  font-size:clamp(31px,4.3vw,60px);
 }
-html[lang^="zh"] .prose > h2,
-html[lang^="zh"] .prose > h3,
-html[lang^="zh"] .pull p,
+html[lang^="zh"] .doc h1,
+html[lang^="zh"] .listing h1{font-weight:900;line-height:1.12;letter-spacing:-.04em;
+  font-size:clamp(28px,3.6vw,60px);max-width:16em}
+html[lang^="zh"] .prose > h2{font-weight:800;font-size:clamp(22px,2.2vw,32px);
+  line-height:1.4;letter-spacing:-.032em}
+html[lang^="zh"] .prose > h3{font-weight:700;font-size:clamp(17.5px,1.35vw,21px);
+  line-height:1.5;letter-spacing:-.022em}
+html[lang^="zh"] .pull-quote p{font-weight:800;font-size:clamp(20px,2.2vw,32px);
+  line-height:1.52;letter-spacing:-.03em;max-width:18em}
 html[lang^="zh"] .callout h3,
 html[lang^="zh"] .rel h3,
-html[lang^="zh"] .doc-cta h2,
-html[lang^="zh"] .related .hd h2,
-html[lang^="zh"] .doc-standfirst strong{
-  font-family:var(--cjk-sans);font-weight:800;
-}
-/* The section numerals stay Latin — they are labels, not headings. */
+html[lang^="zh"] .pn h3,
+html[lang^="zh"] .related .hd h2{font-weight:800;line-height:1.48;letter-spacing:-.025em}
+html[lang^="zh"] .doc-cta h2{font-weight:800;font-size:clamp(25px,3.1vw,46px);
+  line-height:1.3;letter-spacing:-.035em}
+html[lang^="zh"] .prose > p{font-weight:400;line-height:1.95;letter-spacing:.012em;
+  font-size:clamp(16px,1.1vw,17.5px)}
+html[lang^="zh"] .prose li{line-height:1.92;letter-spacing:.01em}
+html[lang^="zh"] .doc-standfirst{font-weight:400;line-height:1.9;max-width:25em;
+  font-size:clamp(16px,1.25vw,19px);letter-spacing:.005em}
+html[lang^="zh"] .callout li,
+html[lang^="zh"] .callout p,
+html[lang^="zh"] .advisory,
+html[lang^="zh"] .doc-cta p{line-height:1.95}
+html[lang^="zh"] .sidenote{line-height:1.9}
+html[lang^="zh"]{--read-max:680px}
+/* Section numerals stay Latin — they are labels, not headings. */
 html[lang^="zh"] .prose > h2::before{font-family:"Inter",sans-serif;font-weight:500}
-html[lang^="zh"] .prose > h2{font-size:clamp(23px,2.35vw,34px);line-height:1.38;letter-spacing:-.035em}
-html[lang^="zh"] .prose > h3{font-size:clamp(18px,1.4vw,22px);line-height:1.5;letter-spacing:-.025em}
-html[lang^="zh"] .doc-cta h2{font-size:clamp(27px,3.4vw,50px);line-height:1.28;letter-spacing:-.04em}
-html[lang^="zh"] .pull p{font-size:clamp(21px,2.3vw,34px);line-height:1.5;letter-spacing:-.03em;max-width:17em}
-html[lang^="zh"] .rel h3{font-size:clamp(18px,1.5vw,24px);line-height:1.48}
-html[lang^="zh"] .doc-standfirst{font-weight:400;line-height:1.9;max-width:26em;
-  font-size:clamp(16.5px,1.3vw,20px);letter-spacing:.005em}
-html[lang^="zh"] .prose > p{line-height:2;letter-spacing:.012em;
-  font-size:clamp(16px,1.15vw,17.5px)}
-html[lang^="zh"] .prose li{line-height:1.95;letter-spacing:.01em}
-html[lang^="zh"] .callout li{line-height:1.9}
-html[lang^="zh"] .advisory{line-height:1.95}
-html[lang^="zh"] .doc-cta p{line-height:1.95;max-width:30em}
-html[lang^="zh"] .prose > h2::before{letter-spacing:.22em}
+html[lang^="zh"] em,html[lang^="zh"] i:not([class]),
+html[lang^="zh"] .hero h1 .line2,
+html[lang^="zh"] .story .route{font-style:normal}
 
 @media(max-width:700px){
-  /* Mobile keeps the editorial voice: the headline stays large. */
-  .doc h1{font-size:clamp(30px,8.4vw,42px)}
-  html[lang^="zh"] .doc h1{font-size:clamp(27px,7.6vw,38px)}
-  .prose > h2{font-size:clamp(23px,6.4vw,30px)}
-  .pull p{font-size:clamp(21px,6vw,28px)}
-  .infocard .row{border-right:0}
+  .doc h1{font-size:clamp(28px,7.6vw,38px)}
+  html[lang^="zh"] .doc h1{font-size:clamp(25px,7vw,34px)}
+  .prose > h2{font-size:clamp(22px,6.2vw,28px)}
+  .pull-quote p{font-size:clamp(20px,5.6vw,26px)}
+  figure.img-portrait{max-width:none}
 }

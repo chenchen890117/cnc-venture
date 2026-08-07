@@ -1,0 +1,321 @@
+{
+  "domain": "https://cncventure.org",
+  "cta": "https://www.surveycake.com/s/3qKZN",
+  "languages": [
+    "en",
+    "zh-tw"
+  ],
+  "categories": [
+    {
+      "slug": "news",
+      "en": "News & Events",
+      "zh-tw": "最新活動消息",
+      "blurb_en": "What we are doing, where we are going, and who is coming with us.",
+      "blurb_zh": "我們正在做的事、要去的地方，以及一起同行的人。"
+    },
+    {
+      "slug": "stories",
+      "en": "Expansion Stories",
+      "zh-tw": "創業案例分享",
+      "blurb_en": "Companies in the middle of the work — reported as they stand.",
+      "blurb_zh": "正在路上的公司——如實記錄，不加修飾。"
+    },
+    {
+      "slug": "market",
+      "en": "Local Market Insights",
+      "zh-tw": "在地知識分享",
+      "blurb_en": "Market overviews, city guides and the practical detail behind each decision.",
+      "blurb_zh": "市場觀察、城市指南，以及每個決定背後的實務細節。"
+    }
+  ],
+  "ui": {
+    "en": {
+      "skip": "Skip to content",
+      "navLabel": "Primary",
+      "navLabelMobile": "Mobile",
+      "langLabel": "Language",
+      "open": "Open menu",
+      "close": "Close menu",
+      "cta": "Start Your Expansion",
+      "ctaLong": "Book a Strategy Session",
+      "home": "Home",
+      "journal": "The Expansion Journal",
+      "projects": "Expansion in Progress",
+      "breadcrumb": "Breadcrumb",
+      "catLabel": "Category",
+      "readLabel": "Reading time",
+      "updatedLabel": "Updated",
+      "statusLabel": "Status",
+      "industryLabel": "Industry",
+      "back": "Back to The Expansion Journal",
+      "backProjects": "Back to Expansion in Progress",
+      "related": "Related reading",
+      "relatedNote": "More from CnC Venture",
+      "infoLabel": "Project information",
+      "docCtaHead": "Ready to Explore the U.S. Market?",
+      "docCtaBody": "Start with a focused conversation about your company, your expansion goals and the markets you are weighing up. We will help you identify the most practical next step.",
+      "docCtaBtn": "Start Your Expansion Assessment",
+      "ctaLabel": "Book a strategy session",
+      "ctaHead": "Ready to Build Your Next Chapter?",
+      "ctaBody": "Start with a focused conversation about your company, expansion goals, timeline, and the U.S. market opportunities you are considering. We will help you identify the most practical next step.",
+      "ctaImgAlt": "Golden light across a saguaro hillside in Arizona",
+      "tagline": "Expand Beyond Borders.",
+      "copyright": "© 2026 CnC Venture. A business expansion platform.",
+      "route": "Taiwan → United States",
+      "allLabel": "All",
+      "prevLabel": "Previous",
+      "nextLabel": "Next",
+      "pagerLabel": "Article navigation",
+      "emptyCategory": "Nothing has been published in this section yet. New pieces appear here as they are written.",
+      "journalDesc": "A business magazine on building in America — market reports, city guides, expansion stories and the considerations behind each decision.",
+      "journalStand": "Market overviews, city guides and practical playbooks for companies building a presence in the United States.",
+      "journalHeroAlt": "Red rock country near Sedona, Arizona",
+      "projectsDesc": "Live engagements, reported as they stand. These are ongoing projects, not finished case studies.",
+      "projectsStand": "Live engagements, reported as they stand. We will publish outcomes when there are outcomes to publish.",
+      "projectsHeroAlt": "Office towers in downtown Phoenix",
+      "nav": [
+        [
+          "About",
+          "/{s}/about/"
+        ],
+        [
+          "Services",
+          "/{s}/services/"
+        ],
+        [
+          "Industries",
+          "/{s}/#industries"
+        ],
+        [
+          "Expansion Stories",
+          "/{s}/#stories"
+        ],
+        [
+          "Insights",
+          "/{s}/#insights"
+        ],
+        [
+          "Arizona",
+          "/{s}/#arizona"
+        ],
+        [
+          "Contact",
+          "/{s}/contact/"
+        ]
+      ],
+      "footer": [
+        [
+          "Platform",
+          [
+            [
+              "About",
+              "/{s}/about/"
+            ],
+            [
+              "Services",
+              "/{s}/services/"
+            ],
+            [
+              "Expansion Journey",
+              "/{s}/#journey"
+            ],
+            [
+              "Industries",
+              "/{s}/#industries"
+            ],
+            [
+              "Partner Ecosystem",
+              "/{s}/#partners"
+            ]
+          ]
+        ],
+        [
+          "Journal",
+          [
+            [
+              "Insights",
+              "/{s}/#insights"
+            ],
+            [
+              "Arizona City Guide",
+              "/{s}/#cities"
+            ],
+            [
+              "Expansion in Progress",
+              "/{s}/#stories"
+            ],
+            [
+              "Why Arizona",
+              "/{s}/#arizona"
+            ]
+          ]
+        ],
+        [
+          "Contact",
+          [
+            [
+              "Book a strategy session",
+              "https://www.surveycake.com/s/3qKZN"
+            ],
+            [
+              "Contact",
+              "/{s}/contact/"
+            ],
+            [
+              "Phoenix, Arizona",
+              null
+            ],
+            [
+              "Taipei, Taiwan",
+              null
+            ]
+          ]
+        ]
+      ]
+    },
+    "zh-tw": {
+      "skip": "跳至主要內容",
+      "navLabel": "主要導覽",
+      "navLabelMobile": "行動版導覽",
+      "langLabel": "語言",
+      "open": "開啟選單",
+      "close": "關閉選單",
+      "cta": "開始美國拓展評估",
+      "ctaLong": "預約策略諮詢",
+      "home": "首頁",
+      "journal": "拓展誌",
+      "projects": "進行中的專案",
+      "breadcrumb": "麵包屑導覽",
+      "catLabel": "分類",
+      "readLabel": "閱讀時間",
+      "updatedLabel": "更新",
+      "statusLabel": "狀態",
+      "industryLabel": "產業",
+      "back": "返回拓展觀點",
+      "backProjects": "返回進行中的專案",
+      "related": "延伸閱讀",
+      "relatedNote": "更多來自 CnC Venture",
+      "infoLabel": "專案資訊",
+      "docCtaHead": "準備好探索美國市場了嗎？",
+      "docCtaBody": "先從一場聚焦的對話開始——談你的公司、拓展目標，以及你正在權衡的市場。我們會協助你找出最務實的下一步。",
+      "docCtaBtn": "開始美國拓展評估",
+      "ctaLabel": "預約策略諮詢",
+      "ctaHead": "準備好，寫下你的下一章了嗎？",
+      "ctaBody": "先從一場聚焦的對話開始——談你的公司、拓展目標、時程，以及你正在評估的美國市場機會。我們會協助你找出最務實的下一步。",
+      "ctaImgAlt": "金色光線灑落亞利桑那的巨柱仙人掌山坡",
+      "tagline": "讓世界，看見你的下一步。",
+      "copyright": "© 2026 CnC Venture. 企業海外拓展平台。",
+      "route": "台灣 → 美國",
+      "allLabel": "全部",
+      "prevLabel": "上一篇",
+      "nextLabel": "下一篇",
+      "pagerLabel": "文章導覽",
+      "emptyCategory": "這個分類還沒有文章。新的內容寫好之後，會出現在這裡。",
+      "journalDesc": "一本關於「在美國落地」的商業誌——市場觀察、城市指南、創業案例，以及每個決定背後的真實考量。",
+      "journalStand": "給正在美國建立據點的企業：市場觀察、城市指南與實務指引。",
+      "journalHeroAlt": "亞利桑那州 Sedona 一帶的紅岩地景",
+      "projectsDesc": "進行中的合作，如實呈現。這些是正在進行的專案，不是完成的案例。",
+      "projectsStand": "進行中的合作，如實呈現。有成果的時候，我們再談成果。",
+      "projectsHeroAlt": "Phoenix 市中心的辦公大樓",
+      "nav": [
+        [
+          "關於",
+          "/{s}/about/"
+        ],
+        [
+          "服務",
+          "/{s}/services/"
+        ],
+        [
+          "產業",
+          "/{s}/#industries"
+        ],
+        [
+          "專案",
+          "/{s}/#stories"
+        ],
+        [
+          "觀點",
+          "/{s}/#insights"
+        ],
+        [
+          "亞利桑那",
+          "/{s}/#arizona"
+        ],
+        [
+          "聯絡",
+          "/{s}/contact/"
+        ]
+      ],
+      "footer": [
+        [
+          "平台",
+          [
+            [
+              "關於",
+              "/{s}/about/"
+            ],
+            [
+              "服務",
+              "/{s}/services/"
+            ],
+            [
+              "拓展歷程",
+              "/{s}/#journey"
+            ],
+            [
+              "產業",
+              "/{s}/#industries"
+            ],
+            [
+              "合作生態系",
+              "/{s}/#partners"
+            ]
+          ]
+        ],
+        [
+          "拓展誌",
+          [
+            [
+              "觀點",
+              "/{s}/#insights"
+            ],
+            [
+              "亞利桑那城市指南",
+              "/{s}/#cities"
+            ],
+            [
+              "進行中的專案",
+              "/{s}/#stories"
+            ],
+            [
+              "為什麼是亞利桑那",
+              "/{s}/#arizona"
+            ]
+          ]
+        ],
+        [
+          "聯絡",
+          [
+            [
+              "預約策略諮詢",
+              "https://www.surveycake.com/s/3qKZN"
+            ],
+            [
+              "聯絡我們",
+              "/{s}/contact/"
+            ],
+            [
+              "Phoenix, Arizona",
+              null
+            ],
+            [
+              "台北，台灣",
+              null
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+}

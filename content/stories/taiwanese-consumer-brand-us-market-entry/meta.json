@@ -1,0 +1,12 @@
+{
+  "type": "project",
+  "category": "stories",
+  "hero": "hero-brand-project.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 6,
+  "related": [
+    "first-steps-before-us-expansion",
+    "phoenix-metro-market-guide"
+  ]
+}

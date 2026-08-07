@@ -1,0 +1,12 @@
+{
+  "name": "cnc-venture",
+  "version": "2.3.0",
+  "private": true,
+  "description": "CnC Venture — bilingual business expansion platform. Static site, no dependencies.",
+  "scripts": {
+    "build": "node scripts/build-content.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

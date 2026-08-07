@@ -1,0 +1,12 @@
+{
+  "type": "project",
+  "category": "stories",
+  "hero": "hero-startup-project.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 5,
+  "related": [
+    "arizona-gateway-for-taiwanese-companies",
+    "first-steps-before-us-expansion"
+  ]
+}

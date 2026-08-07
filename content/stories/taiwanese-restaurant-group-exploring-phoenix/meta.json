@@ -1,0 +1,12 @@
+{
+  "type": "project",
+  "category": "stories",
+  "hero": "hero-restaurant-project.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 4,
+  "related": [
+    "opening-a-restaurant-in-arizona",
+    "phoenix-metro-market-guide"
+  ]
+}

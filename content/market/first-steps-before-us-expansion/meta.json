@@ -1,0 +1,12 @@
+{
+  "type": "article",
+  "category": "market",
+  "hero": "hero-first-steps.jpg",
+  "published": "2026-08-06",
+  "updated": "2026-08-06",
+  "order": 2,
+  "related": [
+    "arizona-gateway-for-taiwanese-companies",
+    "phoenix-metro-market-guide"
+  ]
+}

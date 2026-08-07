@@ -1,8 +1,16 @@
 # CnC Venture — bilingual static site.
-# No build step: the repository root is published as-is.
+#
+# `npm run build` reads /content and writes the article, project and listing
+# pages into /en and /zh-tw. It has no dependencies — Node's standard library
+# only — so there is nothing to install and nothing that can break on a
+# version bump. The two homepages are committed as built files.
 
 [build]
   publish = "."
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
 
 # ── Caching ──────────────────────────────────────────────────────────────
 # Shared assets are referenced by both language trees, so a single cached
@@ -36,3 +44,10 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+
+# /content is the editable source for the Journal. It is read at build time and
+# must never be served as a website path.
+[[redirects]]
+  from = "/content/*"
+  to = "/en/"
+  status = 301

@@ -21,11 +21,23 @@ def _hash(path):
 
 
 def build_map(img_dir):
-    """name -> 8-char content hash, for every file in the image directory."""
+    """name -> 8-char content hash, for every image below the image directory.
+
+    Walks subdirectories: `npm run build` copies each article's own photographs
+    into /img/content/<slug>/, so the tree is no longer flat.
+    """
     global IMG_DIR
     IMG_DIR = img_dir
-    return {n: _hash(os.path.join(img_dir, n))
-            for n in os.listdir(img_dir) if not n.startswith('.')}
+    vmap = {}
+    for root, dirs, files in os.walk(img_dir):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        for n in files:
+            if n.startswith('.'):
+                continue
+            path = os.path.join(root, n)
+            rel = os.path.relpath(path, img_dir).replace(os.sep, '/')
+            vmap[rel] = _hash(path)
+    return vmap
 
 
 def version(doc, vmap):
